@@ -1,5 +1,10 @@
 [
   {
+    "date": "6-9-25",
+    "types": ["saintek", "soshum"],
+    "average": true
+  },
+  {
     "date": "23-8-25",
     "types": ["saintek", "soshum"],
     "average": true
