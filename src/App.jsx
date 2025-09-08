@@ -106,6 +106,7 @@ export default function App() {
         setFilteredData(rows);
         const allSchools = rows.map((s) => s[s.length - 1]);
         setSchools([...new Set(allSchools)]);
+        setSelectedSchools([]);
       })
       .catch((err) => {
         setData([]);
