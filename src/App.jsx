@@ -10,6 +10,7 @@ import SOSHUMTable from "./tables/SOSHUMTable";
 import SOSHUMWithAverageTable from "./tables/SOSHUMWithAverageTable";
 import KHOSTable from "./tables/KHOSTable";
 import { Button, Menu } from "@material-tailwind/react";
+import KHOSWithAverageTable from "./tables/KHOSWithAverageTable";
 
 // A utility function to delay the execution of a function.
 // This prevents the search logic from running on every keystroke,
@@ -48,7 +49,10 @@ function convertDateString(dateString) {
 
 export default function App() {
   const [data, setData] = useState([]);
+  const [schoolData, setSchoolData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [schools, setSchools] = useState([]);
+  const [selectedSchools, setSelectedSchools] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState(date[0]);
   const [selectedType, setSelectedType] = useState(0);
@@ -62,6 +66,32 @@ export default function App() {
     readData(base + `data/${valDate.date}/${valDate.types[valType]}.xlsx`);
   }
 
+  function toggleSchools(sch) {
+    if (!schools.includes(sch)) return;
+
+    const i = selectedSchools.indexOf(sch);
+
+    let result = [...selectedSchools];
+
+    if (i > -1) result.splice(i, 1);
+    else result.push(sch);
+
+    setSelectedSchools(result);
+
+    if (result.length != 0) {
+      const newData = data.filter((student) =>
+        result.includes(student[student.length - 1]),
+      );
+      setSearchTerm("");
+      setFilteredData(newData);
+      setSchoolData(newData);
+    } else {
+      setSearchTerm("");
+      setFilteredData(data);
+      setSchoolData(data);
+    }
+  }
+
   function readData(filePath) {
     fetch(filePath)
       .then((response) => {
@@ -72,11 +102,17 @@ export default function App() {
       .then((blob) => readXlsxFile(blob))
       .then((rows) => {
         setData(rows);
+        setSchoolData(rows);
         setFilteredData(rows);
+        const allSchools = rows.map((s) => s[s.length - 1]);
+        setSchools([...new Set(allSchools)]);
       })
       .catch((err) => {
         setData([]);
+        setSchoolData([]);
         setFilteredData([]);
+        setSchools([]);
+        setSelectedSchools([]);
         console.error("Error reading the Excel file:", err);
       });
   }
@@ -96,12 +132,11 @@ export default function App() {
   const debouncedSearch = useCallback(
     debounce((newSearchTerm) => {
       // If the search bar is empty, show all data.
-      if (!newSearchTerm) {
-        setFilteredData(data);
-      } else {
+      if (!newSearchTerm) setFilteredData(schoolData);
+      else {
         // Filter the data based on the search term.
         // Assuming column indices: 2 (Nama Siswa), 1 (No. Peserta), and 18 (Lembaga).
-        const newData = data.filter(
+        const newData = schoolData.filter(
           (student) =>
             student[2]?.toString().toLowerCase().includes(newSearchTerm) ||
             student[1]?.toString() == newSearchTerm,
@@ -109,7 +144,7 @@ export default function App() {
         setFilteredData(newData);
       }
     }, 300), // 300ms delay. Adjust as needed.
-    [data], // Recreate the debounced function if the `data` state changes.
+    [schoolData], // Recreate the debounced function if the `schoolData` state changes.
   );
 
   // The onChange handler for the input field.
@@ -123,7 +158,7 @@ export default function App() {
   return (
     <div className="relative h-screen overflow-x-auto bg-[url(assets/bg.png)] bg-cover bg-center bg-blend-multiply">
       <div className="px-2 py-4">
-        <div className="flex-column flex flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
+        <div className="flex flex-col flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
           <div>
             <Menu>
               <Menu.Trigger
@@ -150,11 +185,11 @@ export default function App() {
                 </svg>
                 {convertDateString(selectedDate.date)}
                 <svg
-                  className="ms-2.5 h-2.5 w-2.5"
+                  className="ms-2.5 h-3 w-3"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
-                  viewBox="0 0 10 6"
+                  viewBox="0 0 10 5"
                 >
                   <path
                     stroke="currentColor"
@@ -174,11 +209,11 @@ export default function App() {
                     <Menu.Item
                       as="li"
                       key={key}
+                      className="flex items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
                       onClick={() => {
                         if (date[key] != selectedDate)
                           changeData(date[key], selectedType);
                       }}
-                      className="flex items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
                     >
                       <input
                         id={`date-` + key}
@@ -187,10 +222,7 @@ export default function App() {
                         name="date-radio"
                         checked={date[key] == selectedDate}
                         className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                        onChange={() => {
-                          if (date[key] != selectedDate)
-                            changeData(date[key], selectedType);
-                        }}
+                        readOnly
                       />
                       <label
                         htmlFor={`date-` + key}
@@ -228,11 +260,11 @@ export default function App() {
                 </svg>
                 {selectedDate.types[selectedType]?.toUpperCase()}
                 <svg
-                  className="ms-2.5 h-2.5 w-2.5"
+                  className="ms-2.5 h-3 w-3"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
-                  viewBox="0 0 10 6"
+                  viewBox="0 0 10 5"
                 >
                   <path
                     stroke="currentColor"
@@ -245,7 +277,7 @@ export default function App() {
               </Menu.Trigger>
               <Menu.Content
                 as="div"
-                className="z-10 w-48 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+                className="z-10 w-34 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
               >
                 <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
                   {selectedDate.types.map((str, key) => (
@@ -264,10 +296,7 @@ export default function App() {
                         name="type-radio"
                         checked={key == selectedType}
                         className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                        onChange={() => {
-                          if (key != selectedType)
-                            changeData(selectedDate, key);
-                        }}
+                        readOnly
                       />
                       <label
                         htmlFor={`type-` + key}
@@ -284,48 +313,134 @@ export default function App() {
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
-          <div className="relative">
-            <div className="rtl:inset-r-0 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 rtl:right-0">
-              <svg
-                className="h-5 w-5 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+          <div className="flex flex-col flex-wrap items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
+            <Menu>
+              <Menu.Trigger
+                as={Button}
+                ripple={false}
+                className="mr-2 inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                  clipRule="evenodd"
-                />
-              </svg>
+                <svg
+                  className="me-3 h-3 w-3 scale-160 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  fill="none"
+                  viewBox="0 0 22 22"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M8.14294 20v-9l-4 1.125V20h4Zm0 0V6.66667m0 13.33333h2.99996m5-9V6.66667m0 4.33333 4 1.125V13m-4-2v3m2-6-6-4-5.99996 4m4.99996 1h2m-2 3h2m1 6 2 2 4-4"
+                  />
+                </svg>
+                Filter Lembaga{" "}
+                <span class="ms-2 rounded-sm bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                  Beta
+                </span>
+                <svg
+                  className="ms-2.5 h-3 w-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 5"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </Menu.Trigger>
+              <Menu.Content
+                as="div"
+                className="z-10 w-55 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+              >
+                <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
+                  {schools.map((str, key) => (
+                    <Menu.Item
+                      as="li"
+                      key={key}
+                      closeOnClick={false}
+                      className="flex items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      onChange={() => toggleSchools(str)}
+                      ripple={false}
+                    >
+                      <input
+                        id={`checkbox-item-` + key}
+                        type="checkbox"
+                        checked={selectedSchools.includes(str)}
+                        className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
+                        readOnly
+                      />
+                      <label
+                        htmlFor={`checkbox-item-` + key}
+                        className="ms-2 w-full rounded-sm text-sm font-medium text-gray-900 dark:text-gray-300"
+                      >
+                        {str?.toUpperCase()}
+                      </label>
+                    </Menu.Item>
+                  ))}
+                </ul>
+              </Menu.Content>
+            </Menu>
+            <div className="relative">
+              <div className="rtl:inset-r-0 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 rtl:right-0">
+                <svg
+                  className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="table-search"
+                className="block w-60 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                placeholder="Cari Nama Siswa / No. Peserta"
+                value={searchTerm}
+                onChange={handleInputChange}
+              />
             </div>
-            <input
-              type="text"
-              id="table-search"
-              className="block w-60 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-              placeholder="Cari Nama Siswa / No. Peserta"
-              value={searchTerm}
-              onChange={handleInputChange}
-            />
           </div>
         </div>
-        {selectedDate == date[date.length - 1]
-          ? (selectedType == 0 && <SAINTEKOldTable data={filteredData} />) ||
-            (selectedType == 1 && <SOSHUMOldTable data={filteredData} />)
-          : (selectedType == 0 &&
-              (selectedDate.average ? (
-                <SAINTEKWithAverageTable data={filteredData} />
-              ) : (
-                <SAINTEKTable data={filteredData} />
-              ))) ||
-            (selectedType == 1 &&
-              (selectedDate.average ? (
+        <div className="relative overflow-x-auto">
+          {selectedDate == date[date.length - 1]
+            ? (selectedType == 0 && <SAINTEKOldTable data={filteredData} />) ||
+              (selectedType == 1 && (
                 <SOSHUMWithAverageTable data={filteredData} />
-              ) : (
-                <SOSHUMTable data={filteredData} />
-              ))) ||
-            (selectedType == 2 && <KHOSTable data={filteredData} />)}
+              ))
+            : (selectedType == 0 &&
+                (selectedDate.average ? (
+                  <SAINTEKWithAverageTable data={filteredData} />
+                ) : (
+                  <SAINTEKTable data={filteredData} />
+                ))) ||
+              (selectedType == 1 &&
+                (selectedDate.average ? (
+                  <SOSHUMWithAverageTable data={filteredData} />
+                ) : (
+                  <SOSHUMTable data={filteredData} />
+                ))) ||
+              (selectedType == 2 &&
+                (selectedDate.average ? (
+                  <KHOSWithAverageTable data={filteredData} />
+                ) : (
+                  <KHOSTable data={filteredData} />
+                )))}
+        </div>
       </div>
       <footer
         className={`${(filteredData.length == 0 && "mt-40") || (filteredData.length == 2 && "mt-[3.4rem]") || (filteredData.length == 1 && "mt-[6.7rem]")} bg-white px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24 dark:bg-gray-900`}
