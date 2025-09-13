@@ -5,7 +5,6 @@ import readXlsxFile from "read-excel-file";
 import SAINTEKOldTable from "./tables/SAINTEKOldTable";
 import SAINTEKTable from "./tables/SAINTEKTable";
 import SAINTEKWithAverageTable from "./tables/SAINTEKWithAverageTable";
-import SOSHUMOldTable from "./tables/SOSHUMOldTable";
 import SOSHUMTable from "./tables/SOSHUMTable";
 import SOSHUMWithAverageTable from "./tables/SOSHUMWithAverageTable";
 import KHOSTable from "./tables/KHOSTable";
