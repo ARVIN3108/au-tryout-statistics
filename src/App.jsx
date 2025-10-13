@@ -1,3 +1,4 @@
+import { Button, Menu } from "@material-tailwind/react";
 import { base } from "../config";
 import date from "./date.json";
 import { useState, useEffect, useCallback } from "react";
@@ -5,10 +6,10 @@ import readXlsxFile from "read-excel-file";
 import SAINTEKOldTable from "./tables/SAINTEKOldTable";
 import SAINTEKTable from "./tables/SAINTEKTable";
 import SAINTEKWithAverageTable from "./tables/SAINTEKWithAverageTable";
+import SAINTEKWithCivicsTable from "./tables/SAINTEKWithCivicsTable";
 import SOSHUMTable from "./tables/SOSHUMTable";
 import SOSHUMWithAverageTable from "./tables/SOSHUMWithAverageTable";
 import KHOSTable from "./tables/KHOSTable";
-import { Button, Menu } from "@material-tailwind/react";
 import KHOSWithAverageTable from "./tables/KHOSWithAverageTable";
 
 // A utility function to delay the execution of a function.
@@ -423,19 +424,21 @@ export default function App() {
                 <SOSHUMWithAverageTable data={filteredData} />
               ))
             : (selectedType == 0 &&
-                (selectedDate.average ? (
+                (selectedDate.compatibility.includes("CIVICS") ? (
+                  <SAINTEKWithCivicsTable data={filteredData} />
+                ) : selectedDate.compatibility.includes("AVERAGE") ? (
                   <SAINTEKWithAverageTable data={filteredData} />
                 ) : (
                   <SAINTEKTable data={filteredData} />
                 ))) ||
               (selectedType == 1 &&
-                (selectedDate.average ? (
+                (selectedDate.compatibility.includes("AVERAGE") ? (
                   <SOSHUMWithAverageTable data={filteredData} />
                 ) : (
                   <SOSHUMTable data={filteredData} />
                 ))) ||
               (selectedType == 2 &&
-                (selectedDate.average ? (
+                (selectedDate.compatibility.includes("AVERAGE") ? (
                   <KHOSWithAverageTable data={filteredData} />
                 ) : (
                   <KHOSTable data={filteredData} />
