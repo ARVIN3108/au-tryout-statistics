@@ -9,6 +9,7 @@ import SAINTEKWithAverageTable from "./tables/SAINTEKWithAverageTable";
 import SAINTEKWithCivicsTable from "./tables/SAINTEKWithCivicsTable";
 import SOSHUMTable from "./tables/SOSHUMTable";
 import SOSHUMWithAverageTable from "./tables/SOSHUMWithAverageTable";
+import SOSHUMWithCivicsTable from "./tables/SOSHUMWithCivicsTable";
 import KHOSTable from "./tables/KHOSTable";
 import KHOSWithAverageTable from "./tables/KHOSWithAverageTable";
 
@@ -432,7 +433,9 @@ export default function App() {
                   <SAINTEKTable data={filteredData} />
                 ))) ||
               (selectedType == 1 &&
-                (selectedDate.compatibility.includes("AVERAGE") ? (
+                (selectedDate.compatibility.includes("CIVICS") ? (
+                  <SOSHUMWithCivicsTable data={filteredData} />
+                ) : selectedDate.compatibility.includes("AVERAGE") ? (
                   <SOSHUMWithAverageTable data={filteredData} />
                 ) : (
                   <SOSHUMTable data={filteredData} />
