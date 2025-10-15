@@ -18,7 +18,7 @@ export default function SOSHUMWithCivicsTable({ data }) {
             Nama Siswa
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5 -ml-2">INDONESIA</span>
+            <span className="absolute -mt-0.5 -ml-3">INDONESIA</span>
             <br />
             BNR
           </th>
@@ -27,7 +27,7 @@ export default function SOSHUMWithCivicsTable({ data }) {
             NIL
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5">ENGLISH</span>
+            <span className="absolute -mt-0.5 -ml-1">ENGLISH</span>
             <br />
             BNR
           </th>
@@ -36,7 +36,7 @@ export default function SOSHUMWithCivicsTable({ data }) {
             NIL
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5 -ml-3.5">MATEMATIKA</span>
+            <span className="absolute -mt-0.5 -ml-4">MATEMATIKA</span>
             <br />
             BNR
           </th>
@@ -45,7 +45,7 @@ export default function SOSHUMWithCivicsTable({ data }) {
             NIL
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5 -ml-0.5">EKONOMI</span>
+            <span className="absolute -mt-0.5 -ml-1.5">EKONOMI</span>
             <br />
             BNR
           </th>
@@ -54,7 +54,7 @@ export default function SOSHUMWithCivicsTable({ data }) {
             NIL
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5 -ml-1">GEOGRAFI</span>
+            <span className="absolute -mt-0.5 -ml-2">GEOGRAFI</span>
             <br />
             BNR
           </th>
@@ -63,7 +63,7 @@ export default function SOSHUMWithCivicsTable({ data }) {
             NIL
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5 -ml-1.5">SOSIOLOGI</span>
+            <span className="absolute -mt-0.5 -ml-2.5">SOSIOLOGI</span>
             <br />
             BNR
           </th>
@@ -72,7 +72,7 @@ export default function SOSHUMWithCivicsTable({ data }) {
             NIL
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5">SEJARAH</span>
+            <span className="absolute -mt-0.5 -ml-1">SEJARAH</span>
             <br />
             BNR
           </th>
