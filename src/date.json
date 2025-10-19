@@ -1,5 +1,10 @@
 [
   {
+    "date": "19-10-25",
+    "types": ["saintek"],
+    "compatibility": ["CIVICS", "AVERAGE"]
+  },
+  {
     "date": "12-10-25",
     "types": ["saintek", "soshum"],
     "compatibility": ["CIVICS", "AVERAGE"]
