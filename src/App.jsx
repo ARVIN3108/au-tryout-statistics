@@ -12,6 +12,7 @@ import SOSHUMWithAverageTable from "./tables/SOSHUMWithAverageTable";
 import SOSHUMWithCivicsTable from "./tables/SOSHUMWithCivicsTable";
 import KHOSTable from "./tables/KHOSTable";
 import KHOSWithAverageTable from "./tables/KHOSWithAverageTable";
+import UTBKIRTTable from "./tables/UTBKIRTTable";
 
 // A utility function to delay the execution of a function.
 // This prevents the search logic from running on every keystroke,
@@ -340,7 +341,7 @@ export default function App() {
                   />
                 </svg>
                 Filter Lembaga{" "}
-                <span class="ms-2 rounded-sm bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                <span className="ms-2 rounded-sm bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
                   Beta
                 </span>
                 <svg
@@ -425,7 +426,9 @@ export default function App() {
                 <SOSHUMWithAverageTable data={filteredData} />
               ))
             : (selectedType == 0 &&
-                (selectedDate.compatibility.includes("CIVICS") ? (
+                (selectedDate.compatibility.includes("UTBK") ? (
+                  <UTBKIRTTable data={filteredData} />
+                ) : selectedDate.compatibility.includes("CIVICS") ? (
                   <SAINTEKWithCivicsTable data={filteredData} />
                 ) : selectedDate.compatibility.includes("AVERAGE") ? (
                   <SAINTEKWithAverageTable data={filteredData} />
