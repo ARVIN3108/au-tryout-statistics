@@ -13,6 +13,7 @@ import SOSHUMWithCivicsTable from "./tables/SOSHUMWithCivicsTable";
 import KHOSTable from "./tables/KHOSTable";
 import KHOSWithAverageTable from "./tables/KHOSWithAverageTable";
 import UTBKIRTTable from "./tables/UTBKIRTTable";
+import UTBKRealTable from "./tables/UTBKRealTable";
 
 // A utility function to delay the execution of a function.
 // This prevents the search logic from running on every keystroke,
@@ -362,7 +363,9 @@ export default function App() {
                     d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"
                   />
                 </svg>
-                {selectedJSON.types[selectedType]?.toUpperCase()}
+                {selectedJSON.types[selectedType]?.toLowerCase() == "real"
+                  ? "ASLI / " + selectedJSON.types[selectedType]?.toUpperCase()
+                  : selectedJSON.types[selectedType]?.toUpperCase()}
                 <svg
                   className="ms-2.5 h-3 w-3"
                   aria-hidden="true"
@@ -381,7 +384,7 @@ export default function App() {
               </Menu.Trigger>
               <Menu.Content
                 as="div"
-                className="z-10 w-34 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+                className="z-10 w-37 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
               >
                 <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
                   {selectedJSON.types.map((str, key) => (
@@ -407,7 +410,9 @@ export default function App() {
                         htmlFor={`type-` + key}
                         className="ms-2 w-full rounded-sm text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
-                        {str.toUpperCase()}
+                        {str.toLowerCase() == "real"
+                          ? "ASLI / " + str.toUpperCase()
+                          : str.toUpperCase()}
                       </label>
                     </Menu.Item>
                   ))}
@@ -523,8 +528,9 @@ export default function App() {
         </div>
         <div className="relative overflow-x-auto">
           {dataType == "utbk"
-            ? selectedType == 0 && <UTBKIRTTable data={filteredData} />
-            : selectedJSON == date[date.length - 1]
+            ? (selectedType == 0 && <UTBKIRTTable data={filteredData} />) ||
+              (selectedType == 1 && <UTBKRealTable data={filteredData} />)
+            : selectedJSON == date.tka[date.tka.length - 1]
               ? (selectedType == 0 && (
                   <SAINTEKOldTable data={filteredData} />
                 )) ||
@@ -532,15 +538,13 @@ export default function App() {
                   <SOSHUMWithAverageTable data={filteredData} />
                 ))
               : (selectedType == 0 &&
-                  (selectedJSON.compatibility.includes("UTBK") ? (
-                    <UTBKIRTTable data={filteredData} />
-                  ) : selectedJSON.compatibility.includes("CIVICS") ? (
-                    <SAINTEKWithCivicsTable data={filteredData} />
-                  ) : selectedJSON.compatibility.includes("AVERAGE") ? (
-                    <SAINTEKWithAverageTable data={filteredData} />
-                  ) : (
-                    <SAINTEKTable data={filteredData} />
-                  ))) ||
+                selectedJSON.compatibility.includes("CIVICS") ? (
+                  <SAINTEKWithCivicsTable data={filteredData} />
+                ) : selectedJSON.compatibility.includes("AVERAGE") ? (
+                  <SAINTEKWithAverageTable data={filteredData} />
+                ) : (
+                  <SAINTEKTable data={filteredData} />
+                )) ||
                 (selectedType == 1 &&
                   (selectedJSON.compatibility.includes("CIVICS") ? (
                     <SOSHUMWithCivicsTable data={filteredData} />
