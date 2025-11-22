@@ -161,7 +161,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative h-screen overflow-x-auto bg-[url(assets/bg.png)] bg-cover bg-center bg-blend-multiply">
+    <div className="relative grid h-screen overflow-x-auto bg-[url(assets/bg.png)] bg-cover bg-center bg-blend-multiply">
       <div className="px-2 py-4">
         <div className="flex flex-col flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
           <div>
@@ -561,9 +561,7 @@ export default function App() {
                   )))}
         </div>
       </div>
-      <footer
-        className={`${(filteredData.length == 0 && "mt-40") || (filteredData.length == 2 && "mt-[3.4rem]") || (filteredData.length == 1 && "mt-[6.7rem]")} bg-white px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24 dark:bg-gray-900`}
-      >
+      <footer className="bg-white px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24 dark:bg-gray-900">
         {/*// TODO: Adding scroll to top button */}
         {/* <div className="absolute end-4 top-4 sm:end-6 sm:top-6 lg:end-8 lg:top-8">
           <a
