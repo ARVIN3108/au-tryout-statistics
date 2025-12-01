@@ -161,7 +161,7 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen overflow-y-auto bg-[url(assets/bg.png)] bg-center bg-no-repeat bg-blend-multiply antialiased">
+    <div className="h-screen overflow-y-auto bg-[url(assets/bg.png)] bg-cover bg-center bg-no-repeat antialiased bg-blend-multiply">
       <div className="relative grid min-h-screen grid-rows-[1fr_auto]">
         <div className="overflow-x-auto px-2 py-4">
           <div className="flex flex-col flex-wrap items-center justify-between space-y-4 pb-4 lg:flex-row lg:space-y-0">
