@@ -189,7 +189,7 @@ export default function App() {
                       d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"
                     />
                   </svg>
-                  {(dataType == "utbk" && "SNBT - UTBK") || "SNBP - TKA"}
+                  {dataType == "utbk" ? "SNBT - UTBK" : "SNBP - TKA"}
                   <svg
                     className="ms-2.5 h-3 w-3"
                     aria-hidden="true"
@@ -208,7 +208,7 @@ export default function App() {
                 </Menu.Trigger>
                 <Menu.Content
                   as="div"
-                  className="z-10 w-38.5 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+                  className="z-10 w-41.5 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
                 >
                   <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
                     <Menu.Item
@@ -257,6 +257,30 @@ export default function App() {
                         className="ms-2 w-full rounded-sm text-left text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         SNBP - TKA
+                      </label>
+                    </Menu.Item>
+                    <Menu.Item
+                      as="li"
+                      className="flex items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      onClick={() => {
+                        setDataType("toefl");
+                        changeData(date.toefl[0], 0, "toefl");
+                      }}
+                    >
+                      <input
+                        id="type-tka"
+                        type="radio"
+                        defaultValue=""
+                        name="date-radio"
+                        checked={dataType == "toefl"}
+                        className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
+                        readOnly
+                      />
+                      <label
+                        htmlFor="type-toefl"
+                        className="ms-2 w-full rounded-sm text-left text-sm font-medium text-gray-900 dark:text-gray-300"
+                      >
+                        TOEFL - TOAFL
                       </label>
                     </Menu.Item>
                   </ul>
