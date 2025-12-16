@@ -71,7 +71,7 @@
   "toefl": [
     {
       "date": "14-12-25",
-      "types": ["toefl"],
+      "types": ["toefl", "toafl"],
       "compatibility": []
     }
   ]

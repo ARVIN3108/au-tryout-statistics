@@ -14,6 +14,8 @@ import KHOSTable from "./tables/KHOSTable";
 import KHOSWithAverageTable from "./tables/KHOSWithAverageTable";
 import UTBKIRTTable from "./tables/UTBKIRTTable";
 import UTBKRealTable from "./tables/UTBKRealTable";
+import TOEFLTable from "./tables/TOEFLTable";
+import TOAFLTable from "./tables/TOAFLTable";
 
 // A utility function to delay the execution of a function.
 // This prevents the search logic from running on every keystroke,
@@ -51,7 +53,7 @@ function convertDateString(dateString) {
 }
 
 export default function App() {
-  const [dataType, setDataType] = useState("utbk");
+  const [dataType, setDataType] = useState("toefl");
   const [data, setData] = useState([]);
   const [schoolData, setSchoolData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -189,7 +191,9 @@ export default function App() {
                       d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"
                     />
                   </svg>
-                  {dataType == "utbk" ? "SNBT - UTBK" : "SNBP - TKA"}
+                  {(dataType == "utbk" && "SNBT - UTBK") ||
+                    (dataType == "tka" && "SNBP - TKA") ||
+                    "TOEFL - TOAFL"}
                   <svg
                     className="ms-2.5 h-3 w-3"
                     aria-hidden="true"
@@ -208,7 +212,7 @@ export default function App() {
                 </Menu.Trigger>
                 <Menu.Content
                   as="div"
-                  className="z-10 w-41.5 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+                  className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
                 >
                   <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
                     <Menu.Item
@@ -328,7 +332,7 @@ export default function App() {
                 </Menu.Trigger>
                 <Menu.Content
                   as="div"
-                  className="z-10 w-49 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+                  className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
                 >
                   <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
                     {date[dataType].map((str, key) => (
@@ -391,7 +395,10 @@ export default function App() {
                   {selectedJSON.types[selectedType]?.toLowerCase() == "real"
                     ? "ASLI / " +
                       selectedJSON.types[selectedType]?.toUpperCase()
-                    : selectedJSON.types[selectedType]?.toUpperCase()}
+                    : selectedJSON.types[selectedType]?.toLowerCase() == "toafl"
+                      ? selectedJSON.types[selectedType]?.toUpperCase() +
+                        " / KHOS"
+                      : selectedJSON.types[selectedType]?.toUpperCase()}
                   <svg
                     className="ms-2.5 h-3 w-3"
                     aria-hidden="true"
@@ -410,7 +417,7 @@ export default function App() {
                 </Menu.Trigger>
                 <Menu.Content
                   as="div"
-                  className="z-10 w-37 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+                  className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
                 >
                   <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
                     {selectedJSON.types.map((str, key) => (
@@ -438,7 +445,9 @@ export default function App() {
                         >
                           {str.toLowerCase() == "real"
                             ? "ASLI / " + str.toUpperCase()
-                            : str.toUpperCase()}
+                            : str.toLowerCase() == "toafl"
+                              ? str.toUpperCase() + " / KHOS"
+                              : str.toUpperCase()}
                         </label>
                       </Menu.Item>
                     ))}
@@ -556,35 +565,38 @@ export default function App() {
             {dataType == "utbk"
               ? (selectedType == 0 && <UTBKIRTTable data={filteredData} />) ||
                 (selectedType == 1 && <UTBKRealTable data={filteredData} />)
-              : selectedJSON == date.tka[date.tka.length - 1]
-                ? (selectedType == 0 && (
-                    <SAINTEKOldTable data={filteredData} />
-                  )) ||
-                  (selectedType == 1 && (
-                    <SOSHUMWithAverageTable data={filteredData} />
-                  ))
-                : (selectedType == 0 &&
-                  selectedJSON.compatibility.includes("CIVICS") ? (
-                    <SAINTEKWithCivicsTable data={filteredData} />
-                  ) : selectedJSON.compatibility.includes("AVERAGE") ? (
-                    <SAINTEKWithAverageTable data={filteredData} />
-                  ) : (
-                    <SAINTEKTable data={filteredData} />
-                  )) ||
-                  (selectedType == 1 &&
-                    (selectedJSON.compatibility.includes("CIVICS") ? (
-                      <SOSHUMWithCivicsTable data={filteredData} />
-                    ) : selectedJSON.compatibility.includes("AVERAGE") ? (
+              : dataType == "tka"
+                ? selectedJSON == date.tka[date.tka.length - 1]
+                  ? (selectedType == 0 && (
+                      <SAINTEKOldTable data={filteredData} />
+                    )) ||
+                    (selectedType == 1 && (
                       <SOSHUMWithAverageTable data={filteredData} />
-                    ) : (
-                      <SOSHUMTable data={filteredData} />
-                    ))) ||
-                  (selectedType == 2 &&
-                    (selectedJSON.compatibility.includes("AVERAGE") ? (
-                      <KHOSWithAverageTable data={filteredData} />
-                    ) : (
-                      <KHOSTable data={filteredData} />
-                    )))}
+                    ))
+                  : (selectedType == 0 &&
+                      (selectedJSON.compatibility.includes("CIVICS") ? (
+                        <SAINTEKWithCivicsTable data={filteredData} />
+                      ) : selectedJSON.compatibility.includes("AVERAGE") ? (
+                        <SAINTEKWithAverageTable data={filteredData} />
+                      ) : (
+                        <SAINTEKTable data={filteredData} />
+                      ))) ||
+                    (selectedType == 1 &&
+                      (selectedJSON.compatibility.includes("CIVICS") ? (
+                        <SOSHUMWithCivicsTable data={filteredData} />
+                      ) : selectedJSON.compatibility.includes("AVERAGE") ? (
+                        <SOSHUMWithAverageTable data={filteredData} />
+                      ) : (
+                        <SOSHUMTable data={filteredData} />
+                      ))) ||
+                    (selectedType == 2 &&
+                      (selectedJSON.compatibility.includes("AVERAGE") ? (
+                        <KHOSWithAverageTable data={filteredData} />
+                      ) : (
+                        <KHOSTable data={filteredData} />
+                      )))
+                : (selectedType == 0 && <TOEFLTable data={filteredData} />) ||
+                  (selectedType == 1 && <TOAFLTable data={filteredData} />)}
           </div>
         </div>
         <footer className="bg-white px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24 dark:bg-gray-900">
