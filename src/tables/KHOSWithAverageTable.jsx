@@ -1,12 +1,12 @@
 export default function KHOSWithAverageTable({ data }) {
   return (
     <table className="text-center text-sm text-gray-500 opacity-90 rtl:text-right dark:text-gray-400">
-      <thead className="border-b-2 bg-gray-50 text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-300">
+      <thead className="border-b-2 bg-gray-50 text-xs whitespace-nowrap text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-300">
         <tr>
           <th scope="col" className="rounded-tl-lg p-3">
             No
           </th>
-          <th scope="col" className="p-3 whitespace-nowrap">
+          <th scope="col" className="p-3">
             Rank
             <br />
             Se-AU
@@ -108,7 +108,7 @@ export default function KHOSWithAverageTable({ data }) {
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="whitespace-nowrap lg:whitespace-normal">
         {data &&
           data.map((row, rowIndex) => (
             <tr
