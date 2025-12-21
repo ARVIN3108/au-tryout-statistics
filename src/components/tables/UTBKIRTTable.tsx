@@ -3,7 +3,7 @@ import type { Row } from "read-excel-file";
 export default function UTBKIRTTable({ data }: { data: Row[] }) {
   return (
     <table className="w-full text-center text-sm text-gray-500 opacity-90 rtl:text-right dark:text-gray-400">
-      <thead className="border-b-2 bg-gray-50 text-xs whitespace-nowrap text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-300">
+      <thead className="border-b-2 bg-gray-50 text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-300">
         <tr>
           <th scope="col" className="rounded-tl-lg p-4">
             No
