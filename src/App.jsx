@@ -53,6 +53,7 @@ function convertDateString(dateString) {
 }
 
 export default function App() {
+  const [isWarnActive, setWarnActive] = useState(false);
   const [dataType, setDataType] = useState("toefl");
   const [data, setData] = useState([]);
   const [schoolData, setSchoolData] = useState([]);
@@ -164,6 +165,78 @@ export default function App() {
 
   return (
     <div className="h-screen overflow-y-auto bg-[url(assets/bg.png)] bg-cover bg-center bg-no-repeat antialiased bg-blend-multiply">
+      <div
+        className={`${isWarnActive && "animate-fadeOut"} sticky start-0 top-0 z-1 mb-4 flex w-full items-center border-t bg-orange-50 p-3 text-orange-900 opacity-90 dark:bg-orange-950 dark:text-orange-300`}
+        role="alert"
+      >
+        <svg
+          className="mt-0.5 h-4 w-4 shrink-0 md:mt-0"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        <span className="sr-only">Info</span>
+        <div className="ms-3 text-sm font-medium">
+          Kamu berada di website lama. Mungkin kamu berada di sini karena
+          merasakan lag atau bug pada website baru. Jika tidak,{" "}
+          <b>sangat direkomendasikan</b> untuk kembali ke website yang baru.
+          <a
+            href="https://s.id/hasiltryoutakbar"
+            className="ml-1 inline-flex items-center text-sm font-medium text-black hover:underline md:ml-1 dark:text-white"
+          >
+            Klik disini
+            <svg
+              className="ml-1.5 h-3 w-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9"
+              ></path>
+            </svg>
+          </a>
+        </div>
+        <button
+          type="button"
+          className="-mx-1.5 -my-1.5 ms-auto inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg p-1.5 hover:bg-orange-100 focus:ring-2 focus:ring-orange-900 dark:hover:bg-orange-900 dark:focus:ring-orange-100"
+          aria-label="Close"
+          onClick={() => setWarnActive(true)}
+        >
+          <span className="sr-only">Close</span>
+          <svg
+            className="h-3 w-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+        </button>
+      </div>
       <div className="relative grid min-h-screen grid-rows-[1fr_auto]">
         <div className="overflow-x-auto px-2 py-4">
           <div className="flex flex-col flex-wrap items-center justify-between space-y-4 pb-4 lg:flex-row lg:space-y-0">

@@ -3,6 +3,16 @@
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
 
+@theme {
+  --animate-fadeOut: fadeOut 0.5s ease-in-out forwards;
+  @keyframes fadeOut {
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
+}
+
 /* For Chrome, Safari, and Edge */
 ::-webkit-scrollbar {
   width: 12px;
