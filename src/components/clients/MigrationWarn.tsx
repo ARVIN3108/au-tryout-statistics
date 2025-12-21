@@ -39,7 +39,7 @@ export default function MigrationWarn() {
         . Jika kamu merasakan lag atau bug, silakan kembali ke website yang
         lama.
         <Link
-          href="https://arvindt.is-a.dev/hasiltryoutakbar"
+          href="https://arvindt.is-a.dev/hasiltryoutakbar?old=true"
           className="ml-1 inline-flex items-center text-sm font-medium text-black hover:underline md:ml-1 dark:text-white"
         >
           Klik disini
