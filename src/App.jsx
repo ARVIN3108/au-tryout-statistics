@@ -54,7 +54,7 @@ function convertDateString(dateString) {
 
 export default function App() {
   const [isWarnActive, setWarnActive] = useState(false);
-  const [dataType, setDataType] = useState("toefl");
+  const [dataType, setDataType] = useState("utbk");
   const [data, setData] = useState([]);
   const [schoolData, setSchoolData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
