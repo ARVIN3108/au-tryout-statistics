@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: "/toefl/" + date.toefl[0].date + "/toefl",
+        destination: "/utbk/" + date.utbk[0].date + "/irt",
         permanent: false,
       },
     ];
