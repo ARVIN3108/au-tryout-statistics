@@ -6,7 +6,7 @@ export default function UTBKIRTTable({ data }) {
           <th scope="col" className="rounded-tl-lg p-4">
             No
           </th>
-          <th scope="col" className="p-3">
+          <th scope="col" className="p-3 whitespace-nowrap">
             Rank
             <br />
             Se-AU
