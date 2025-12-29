@@ -1,6 +1,11 @@
 {
   "utbk": [
     {
+      "date": "28-12-25",
+      "types": ["irt"],
+      "compatibility": []
+    },
+    {
       "date": "21-12-25",
       "types": ["irt"],
       "compatibility": []
