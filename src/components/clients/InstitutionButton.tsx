@@ -33,7 +33,7 @@ export default function InstitutionButton({
       <Menu.Trigger
         as={Button}
         ripple={false}
-        className="mr-2 inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+        className="mr-2 inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
       >
         <svg
           className="me-3 h-3 w-3 scale-160 text-gray-500 dark:text-gray-400"
@@ -74,12 +74,12 @@ export default function InstitutionButton({
         className="z-10 w-55 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
       >
         <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
-          {institutions.map((str, key) => (
+          {institutions.sort().map((str, key) => (
             <Menu.Item
               as="li"
               key={key}
               closeOnClick={false}
-              className="flex items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
               onChange={() => {
                 const url = buildURL(pathname, {
                   q: searchVar.q,
@@ -93,12 +93,12 @@ export default function InstitutionButton({
                 id={`checkbox-item-` + key}
                 type="checkbox"
                 checked={query.includes(str)}
-                className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
+                className="h-4 w-4 cursor-pointer rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
                 readOnly
               />
               <label
                 htmlFor={`checkbox-item-` + key}
-                className="ms-2 w-full rounded-sm text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ms-2 w-full cursor-pointer rounded-sm text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 {str?.toUpperCase()}
               </label>

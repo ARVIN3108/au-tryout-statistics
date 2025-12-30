@@ -1,4 +1,4 @@
-import NavigationButton from "@/components/NavigationButton";
+import NavigationButton from "@/components/clients/NavigationButton";
 import Link from "next/link";
 
 export default function NotFound() {

@@ -1,5 +1,5 @@
 "use client";
-import NavigationButton from "@/components/NavigationButton";
+import NavigationButton from "@/components/clients/NavigationButton";
 
 export default function ErrorPage() {
   return (
