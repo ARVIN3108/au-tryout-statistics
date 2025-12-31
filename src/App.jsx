@@ -653,7 +653,10 @@ export default function App() {
             </div>
             <div className="relative overflow-x-auto">
               {dataType == "utbk"
-                ? (selectedType == 0 && <UTBKIRTTable data={filteredData} />) ||
+                ? (selectedType == 0 && selectedJSON.types[0] == "real" && (
+                    <UTBKRealTable data={filteredData} />
+                  )) ||
+                  (selectedType == 0 && <UTBKIRTTable data={filteredData} />) ||
                   (selectedType == 1 && <UTBKRealTable data={filteredData} />)
                 : dataType == "tka"
                   ? selectedJSON == date.tka[date.tka.length - 1]
