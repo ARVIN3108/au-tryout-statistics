@@ -3,7 +3,7 @@
 import { Menu, Button } from "@material-tailwind/react";
 import json from "../../../date.json";
 import { useRouter } from "next/navigation";
-import { buildURL, convertDateString } from "@/utils";
+import { buildURL, convertDateString, isLessonAvailable } from "@/utils";
 
 export default function LeftMenu({
   variable,
@@ -73,17 +73,23 @@ export default function LeftMenu({
               as="li"
               className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
               onMouseEnter={() => {
-                const url = buildURL(`/utbk/${json.utbk[0].date}/irt`, {
-                  q: searchVar.q,
-                  i: searchVar.i,
-                });
+                const url = buildURL(
+                  `/utbk/${json.utbk[0].date}/${json.utbk[0].types[0]}`,
+                  {
+                    q: searchVar.q,
+                    i: searchVar.i,
+                  },
+                );
                 route.prefetch(url);
               }}
               onClick={() => {
-                const url = buildURL(`/utbk/${json.utbk[0].date}/irt`, {
-                  q: searchVar.q,
-                  i: searchVar.i,
-                });
+                const url = buildURL(
+                  `/utbk/${json.utbk[0].date}/${json.utbk[0].types[0]}`,
+                  {
+                    q: searchVar.q,
+                    i: searchVar.i,
+                  },
+                );
                 route.push(url);
               }}
             >
@@ -107,17 +113,23 @@ export default function LeftMenu({
               as="li"
               className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
               onMouseEnter={() => {
-                const url = buildURL(`/tka/${json.tka[0].date}/saintek`, {
-                  q: searchVar.q,
-                  i: searchVar.i,
-                });
+                const url = buildURL(
+                  `/tka/${json.tka[0].date}/${json.tka[0].types[0]}`,
+                  {
+                    q: searchVar.q,
+                    i: searchVar.i,
+                  },
+                );
                 route.prefetch(url);
               }}
               onClick={() => {
-                const url = buildURL(`/tka/${json.tka[0].date}/saintek`, {
-                  q: searchVar.q,
-                  i: searchVar.i,
-                });
+                const url = buildURL(
+                  `/tka/${json.tka[0].date}/${json.tka[0].types[0]}`,
+                  {
+                    q: searchVar.q,
+                    i: searchVar.i,
+                  },
+                );
                 route.push(url);
               }}
             >
@@ -141,17 +153,23 @@ export default function LeftMenu({
               as="li"
               className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
               onMouseEnter={() => {
-                const url = buildURL(`/toefl/${json.toefl[0].date}/toefl`, {
-                  q: searchVar.q,
-                  i: searchVar.i,
-                });
+                const url = buildURL(
+                  `/toefl/${json.toefl[0].date}/${json.toefl[0].types[0]}`,
+                  {
+                    q: searchVar.q,
+                    i: searchVar.i,
+                  },
+                );
                 route.prefetch(url);
               }}
               onClick={() => {
-                const url = buildURL(`/toefl/${json.toefl[0].date}/toefl`, {
-                  q: searchVar.q,
-                  i: searchVar.i,
-                });
+                const url = buildURL(
+                  `/toefl/${json.toefl[0].date}/${json.toefl[0].types[0]}`,
+                  {
+                    q: searchVar.q,
+                    i: searchVar.i,
+                  },
+                );
                 route.push(url);
               }}
             >
@@ -227,7 +245,7 @@ export default function LeftMenu({
                 onMouseEnter={() => {
                   if (data[key].date != variable.date) {
                     const url = buildURL(
-                      `/${variable.type}/${data[key].date}/${variable.lesson}`,
+                      `/${variable.type}/${data[key].date}/${isLessonAvailable(data[key].types[0], variable.lesson)}`,
                       {
                         q: searchVar.q,
                         i: searchVar.i,
@@ -239,7 +257,7 @@ export default function LeftMenu({
                 onClick={() => {
                   if (data[key].date != variable.date) {
                     const url = buildURL(
-                      `/${variable.type}/${data[key].date}/${variable.lesson}`,
+                      `/${variable.type}/${data[key].date}/${isLessonAvailable(data[key].types[0], variable.lesson)}`,
                       {
                         q: searchVar.q,
                         i: searchVar.i,

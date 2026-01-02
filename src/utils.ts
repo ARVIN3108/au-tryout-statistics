@@ -151,3 +151,8 @@ export function toArrayOfString(
   // For consistency, we convert it to a string and wrap it.
   return [String(value)];
 }
+
+export function isLessonAvailable(defaultLesson: string, lesson: string) {
+  if (defaultLesson != lesson) return defaultLesson;
+  return lesson;
+}
