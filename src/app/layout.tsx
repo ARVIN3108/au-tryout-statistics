@@ -1,8 +1,10 @@
+import { Analytics } from "@vercel/analytics/next";
 import Image from "next/image";
 import { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import MigrationWarn from "@/components/clients/MigrationWarn";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Hasil Try Out Akbar Amanatul Ummah",
@@ -128,6 +130,8 @@ export default async function RootLayout({
             </footer>
           </div>
         </div>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
