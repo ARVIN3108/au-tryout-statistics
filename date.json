@@ -33,6 +33,11 @@
   ],
   "tka": [
     {
+      "date": "29-12-25",
+      "types": ["tka"],
+      "compatibility": []
+    },
+    {
       "date": "19-10-25",
       "types": ["saintek", "soshum"],
       "compatibility": ["CIVICS", "AVERAGE"]

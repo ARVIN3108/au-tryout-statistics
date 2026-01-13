@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import MigrationWarn from "@/components/clients/MigrationWarn";
@@ -55,7 +55,7 @@ export default async function RootLayout({
                       alt="AU Logo"
                     />
                     <span className="font-Revans self-center px-3 pt-3 text-2xl font-semibold whitespace-nowrap sm:pt-0">
-                      Amanatul Ummah Try Out Statistics
+                      Amanatul Ummah Try Out & TKA Statistics
                     </span>
                   </div>
                   <p className="mt-6 max-w-md text-center leading-relaxed text-gray-500 sm:max-w-sm sm:text-left dark:text-gray-400">

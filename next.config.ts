@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 import date from "./date.json";
-const data = date.utbk[0];
+const type = "tka";
+const data = date[type][0];
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -9,7 +10,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: `/utbk/${data.date}/${data.types[0]}`,
+        destination: `/${type}/${data.date}/${data.types[0]}`,
         permanent: false,
       },
     ];

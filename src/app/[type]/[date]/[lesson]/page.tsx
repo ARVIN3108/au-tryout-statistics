@@ -19,14 +19,22 @@ import InstitutionButton from "@/components/clients/InstitutionButton";
 import { toArrayOfString } from "@/utils";
 import TOEFLTable from "@/components/tables/TOEFLTable";
 import TOAFLTable from "@/components/tables/TOAFLTable";
+import TKATable from "@/components/tables/TKATable";
 
-export default async function Page({
-  params,
-  searchParams,
-}: Readonly<{
+type Props = Readonly<{
   params: Promise<{ [key: string]: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}>) {
+}>;
+
+export async function generateMetadata({ params }: Props) {
+  const lesson = (await params).lesson;
+  if (lesson == "tka")
+    return {
+      title: "Hasil Tes Kemampuan Akademik Amanatul Ummah",
+    };
+}
+
+export default async function Page({ params, searchParams }: Props) {
   const variable = await params;
   const searchVar = await searchParams;
 
@@ -87,11 +95,12 @@ export default async function Page({
   if (typeof searchVar.q === "string" && searchVar.q.trim().length > 0)
     data.tryout = data.tryout.filter(
       (student) =>
-        student[2]
+        student[variable.lesson == "tka" ? 1 : 2]
           ?.toString()
           .toLowerCase()
           .includes(`${searchVar.q}`.toLowerCase()) ||
-        student[1]?.toString() == `${searchVar.q}`.toLowerCase(),
+        student[variable.lesson == "tka" ? 0 : 1]?.toString().toLowerCase() ==
+          `${searchVar.q}`.toLowerCase(),
     );
 
   return (
@@ -102,10 +111,12 @@ export default async function Page({
         </div>
         <label htmlFor="table-search" className="sr-only"></label>
         <div className="flex flex-col flex-wrap items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
-          <InstitutionButton
-            institutions={data.institutions as string[]}
-            searchVar={searchVar}
-          />
+          {variable.lesson != "tka" && (
+            <InstitutionButton
+              institutions={data.institutions as string[]}
+              searchVar={searchVar}
+            />
+          )}
           <div className="relative">
             <div className="rtl:inset-r-0 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 rtl:right-0">
               <svg
@@ -162,7 +173,8 @@ export default async function Page({
                     <KHOSWithAverageTable data={data.tryout} />
                   ) : (
                     <KHOSTable data={data.tryout} />
-                  )))
+                  ))) ||
+                (variable.lesson == "tka" && <TKATable data={data.tryout} />)
             : (variable.lesson == "toefl" && (
                 <TOEFLTable data={data.tryout} />
               )) ||
