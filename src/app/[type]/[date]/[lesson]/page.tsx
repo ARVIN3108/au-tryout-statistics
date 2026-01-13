@@ -16,7 +16,7 @@ import UTBKRealTable from "@/components/tables/UTBKRealTable";
 import LeftMenu from "@/components/clients/LeftMenu";
 import SearchInput from "@/components/clients/SearchInput";
 import InstitutionButton from "@/components/clients/InstitutionButton";
-import { toArrayOfString } from "@/utils";
+import { formatTKAIdString, toArrayOfString } from "@/utils";
 import TOEFLTable from "@/components/tables/TOEFLTable";
 import TOAFLTable from "@/components/tables/TOAFLTable";
 import TKATable from "@/components/tables/TKATable";
@@ -93,14 +93,22 @@ export default async function Page({ params, searchParams }: Props) {
   }
 
   if (typeof searchVar.q === "string" && searchVar.q.trim().length > 0)
-    data.tryout = data.tryout.filter(
-      (student) =>
-        student[variable.lesson == "tka" ? 1 : 2]
-          ?.toString()
-          .toLowerCase()
-          .includes(`${searchVar.q}`.toLowerCase()) ||
-        student[variable.lesson == "tka" ? 0 : 1]?.toString().toLowerCase() ==
-          `${searchVar.q}`.toLowerCase(),
+    data.tryout = data.tryout.filter((student) =>
+      variable.lesson == "tka"
+        ? student[1]
+            ?.toString()
+            .toLowerCase()
+            .includes(`${searchVar.q}`.toLowerCase()) ||
+          student[0]?.toString().toLowerCase() ==
+            `${searchVar.q}`.toLowerCase() ||
+          formatTKAIdString(student[0]?.toString().toLowerCase()) ==
+            `${searchVar.q}`.toLowerCase()
+        : student[2]
+            ?.toString()
+            .toLowerCase()
+            .includes(`${searchVar.q}`.toLowerCase()) ||
+          student[1]?.toString().toLowerCase() ==
+            `${searchVar.q}`.toLowerCase(),
     );
 
   return (

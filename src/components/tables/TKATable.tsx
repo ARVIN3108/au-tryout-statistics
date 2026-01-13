@@ -1,3 +1,4 @@
+import { formatTKAIdString } from "@/utils";
 import type { Row } from "read-excel-file";
 
 export default function TKATable({ data }: { data: Row[] }) {
@@ -71,10 +72,16 @@ export default function TKATable({ data }: { data: Row[] }) {
                     <th
                       key={cellIndex}
                       scope="row"
-                      className="py-3 pl-4 text-left whitespace-nowrap text-gray-900 dark:text-white"
+                      className="py-3 pl-2.5 text-left whitespace-nowrap text-gray-900 dark:text-white"
                     >
                       {cell as string}
                     </th>
+                  );
+                if (cellIndex == 0)
+                  return (
+                    <td key={cellIndex} className="whitespace-nowrap">
+                      {formatTKAIdString(cell as string)}
+                    </td>
                   );
                 return (
                   <td

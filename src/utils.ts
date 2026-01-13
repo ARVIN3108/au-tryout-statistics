@@ -156,3 +156,21 @@ export function isLessonAvailable(defaultLesson: string, lesson: string) {
   if (defaultLesson != lesson) return defaultLesson;
   return lesson;
 }
+
+/**
+ * Converts a 17-character raw ID into the formatted version.
+ * @param rawStr - e.g., "T3250501050600018"
+ */
+export function formatTKAIdString(rawStr: string): string {
+  if (rawStr.length !== 17) return rawStr; // Basic validation
+
+  return [
+    rawStr.slice(0, 2), // T3
+    rawStr.slice(2, 4), // 25
+    rawStr.slice(4, 6), // 05
+    rawStr.slice(6, 8), // 01
+    rawStr.slice(8, 12), // 0506
+    rawStr.slice(12, 16), // 0001
+    rawStr.slice(16), // 8
+  ].join("-");
+}
