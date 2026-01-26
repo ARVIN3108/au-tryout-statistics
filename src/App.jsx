@@ -199,11 +199,11 @@ export default function App() {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
           </svg>
-          <span className="sr-only">Info</span>
-          <div className="ms-3 text-sm font-medium">
+          <span className="sr-only">Alert</span>
+          <div className="ms-2.5 text-sm font-medium">
             Kamu berada di website lama. Mungkin kamu berada di sini karena
             merasakan lag atau bug pada website baru. Jika tidak,{" "}
             <b>sangat direkomendasikan</b> untuk kembali ke website yang baru.
