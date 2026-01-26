@@ -28,7 +28,7 @@ export default function MigrationWarn() {
         />
       </svg>
       <span className="sr-only">Info</span>
-      <div className="ms-3 text-sm font-medium">
+      <div className="ms-2.5 text-sm font-medium">
         Website ini menggunakan framework baru yakni{" "}
         <Link
           className="underline hover:text-black hover:no-underline dark:hover:text-white"
