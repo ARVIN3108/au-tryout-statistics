@@ -19,18 +19,18 @@
     "read-excel-file": "^6.0.3"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.990.0",
-    "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^25.2.3",
+    "@aws-sdk/client-s3": "^3.995.0",
+    "@tailwindcss/postcss": "^4.2.0",
+    "@types/node": "^25.3.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^10.0.0",
+    "eslint": "^10.0.1",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "^4.2.0",
     "typescript": "^5.9.3"
   }
 }

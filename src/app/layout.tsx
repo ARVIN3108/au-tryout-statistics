@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
-import MigrationWarn from "@/components/clients/MigrationWarn";
+// import MigrationWarn from "@/components/clients/MigrationWarn";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <div className="h-screen overflow-y-auto bg-[url(@/assets/bg.png)] bg-cover bg-center bg-no-repeat antialiased bg-blend-multiply">
-          <MigrationWarn />
+          {/* <MigrationWarn /> */}
           <div className="relative grid min-h-screen grid-rows-[1fr_auto]">
             <div className="overflow-x-auto">{children}</div>
             <footer className="bg-white px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24 dark:bg-gray-900">
