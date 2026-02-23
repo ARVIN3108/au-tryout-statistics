@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 import date from "./date.json";
-const type = "toefl";
+const type = "utbk";
 const data = date[type][0];
 
 const nextConfig: NextConfig = {
