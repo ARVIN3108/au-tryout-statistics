@@ -1,4 +1,4 @@
-import type { Row } from "read-excel-file";
+import type { Row } from "read-excel-file/node";
 
 export default function UTBKRealTable({ data }: { data: Row[] }) {
   return (

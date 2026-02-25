@@ -1,5 +1,5 @@
 import { formatTKAIdString } from "@/utils";
-import type { Row } from "read-excel-file";
+import type { Row } from "read-excel-file/node";
 
 export default function TKATable({ data }: { data: Row[] }) {
   return (
