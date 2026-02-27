@@ -2,7 +2,7 @@ import { Button, Menu } from "@material-tailwind/react";
 import { base } from "../config";
 import date from "./date.json";
 import { useState, useEffect, useCallback, useRef } from "react";
-import readXlsxFile from "read-excel-file";
+import readXlsxFile from "read-excel-file/node";
 import SAINTEKOldTable from "./tables/SAINTEKOldTable";
 import SAINTEKTable from "./tables/SAINTEKTable";
 import SAINTEKWithAverageTable from "./tables/SAINTEKWithAverageTable";
@@ -204,9 +204,8 @@ export default function App() {
           </svg>
           <span className="sr-only">Alert</span>
           <div className="ms-2.5 text-sm font-medium">
-            Kamu berada di website lama. Mungkin kamu berada di sini karena
-            merasakan lag atau bug pada website baru. Jika tidak,{" "}
-            <b>sangat direkomendasikan</b> untuk kembali ke website yang baru.
+            Versi website ini sudah tidak diupdate lagi. Silahkan kembali ke
+            versi website yang baru.
             <a
               href="https://s.id/hasiltryoutakbar"
               className="ml-1 inline-flex items-center text-sm font-medium text-black hover:underline md:ml-1 dark:text-white"
