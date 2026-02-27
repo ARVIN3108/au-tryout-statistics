@@ -29,7 +29,7 @@ export default function LeftMenu({
           className="inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
         >
           <svg
-            className="me-3 h-3 w-3 scale-150 text-gray-500 dark:text-gray-400"
+            className="me-2.5 h-3 w-3 scale-150 text-gray-500 dark:text-gray-400"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="22"
@@ -66,7 +66,7 @@ export default function LeftMenu({
         </Menu.Trigger>
         <Menu.Content
           as="div"
-          className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+          className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-800"
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             <Menu.Item
@@ -234,7 +234,7 @@ export default function LeftMenu({
         </Menu.Trigger>
         <Menu.Content
           as="div"
-          className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+          className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-800"
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             {data.map((d, key) => (
@@ -294,7 +294,7 @@ export default function LeftMenu({
           className="ml-2 inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
         >
           <svg
-            className="me-3 h-3 w-3 scale-150 text-gray-500 dark:text-gray-400"
+            className="me-2.5 h-3 w-3 scale-150 text-gray-500 dark:text-gray-400"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="22"
@@ -333,7 +333,7 @@ export default function LeftMenu({
         </Menu.Trigger>
         <Menu.Content
           as="div"
-          className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+          className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-800"
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             {data

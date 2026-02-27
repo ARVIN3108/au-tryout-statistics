@@ -71,7 +71,7 @@ export default function InstitutionButton({
       </Menu.Trigger>
       <Menu.Content
         as="div"
-        className="z-10 w-55 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-700"
+        className="z-10 w-55 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-800"
       >
         <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
           {institutions.sort().map((str, key) => (
