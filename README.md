@@ -48,8 +48,6 @@ Before you begin, ensure you have the following installed on your local machine:
 - **Git:** To clone the repository.
 - **Code Editor:** [Visual Studio Code](https://code.visualstudio.com/) or [VSCodium](https://vscodium.com/) is highly recommended.
 
----
-
 ## 🚀 Getting Started
 
 To run this project locally for development or review:
@@ -108,8 +106,6 @@ Open http://localhost:3000 with your browser to see the result.
 ## 🤝 Contributing
 
 Contributions are welcome! If you have suggestions for improvements or bug fixes, feel free to [open an issue](https://github.com/ARVIN3108/au-tryout-statistics/issues) or [make a pull request](https://github.com/ARVIN3108/au-tryout-statistics/pulls).
-
----
 
 ## 📄 License
 
