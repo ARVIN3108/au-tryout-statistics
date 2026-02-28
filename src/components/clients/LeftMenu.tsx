@@ -71,7 +71,7 @@ export default function LeftMenu({
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             <Menu.Item
               as="li"
-              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               onMouseEnter={() => {
                 const url = buildURL(
                   `/utbk/${json.utbk[0].date}/${json.utbk[0].types[0]}`,
@@ -111,7 +111,7 @@ export default function LeftMenu({
             </Menu.Item>
             <Menu.Item
               as="li"
-              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               onMouseEnter={() => {
                 const url = buildURL(
                   `/tka/${json.tka[0].date}/${json.tka[0].types[0]}`,
@@ -151,7 +151,7 @@ export default function LeftMenu({
             </Menu.Item>
             <Menu.Item
               as="li"
-              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               onMouseEnter={() => {
                 const url = buildURL(
                   `/toefl/${json.toefl[0].date}/${json.toefl[0].types[0]}`,
@@ -241,7 +241,7 @@ export default function LeftMenu({
               <Menu.Item
                 as="li"
                 key={key}
-                className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                 onMouseEnter={() => {
                   if (data[key].date != variable.date) {
                     const url = buildURL(
@@ -342,7 +342,7 @@ export default function LeftMenu({
                 <Menu.Item
                   as="li"
                   key={key}
-                  className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   onMouseEnter={() => {
                     if (variable.lesson != d.toLowerCase()) {
                       const url = buildURL(

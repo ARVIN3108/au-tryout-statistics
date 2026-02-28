@@ -79,7 +79,7 @@ export default function InstitutionButton({
               as="li"
               key={key}
               closeOnClick={false}
-              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               onChange={() => {
                 const url = buildURL(pathname, {
                   q: searchVar.q,
