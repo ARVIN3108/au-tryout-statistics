@@ -182,7 +182,7 @@ export default function App() {
     return (
       <div className="h-screen overflow-y-auto bg-[url(assets/bg.png)] bg-cover bg-center bg-no-repeat antialiased bg-blend-multiply">
         <div
-          className={`${isWarnActive && "animate-fadeOut"} sticky start-0 top-0 z-1 mb-4 flex w-full items-center border-t bg-orange-50 p-3 text-orange-900 opacity-90 dark:bg-orange-950 dark:text-orange-300`}
+          className={`${isWarnActive && "animate-fadeOut"} sticky inset-s-0 top-0 z-1 mb-4 flex w-full items-center border-t bg-orange-50 p-3 text-orange-900 opacity-90 dark:bg-orange-950 dark:text-orange-300`}
           role="alert"
         >
           <svg
