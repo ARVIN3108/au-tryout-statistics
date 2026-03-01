@@ -43,8 +43,8 @@ This project is built using modern web technologies to ensure speed and responsi
 
 Before you begin, ensure you have the following installed on your local machine:
 
-- **JavaScript runtimes:** [Bun](https://bun.com/) **(Recommended)** [Node.js](https://nodejs.org/) (v18.x or higher).
-- **Package Manager:** `bun` (included with Bun itself), [`pnpm`](https://pnpm.io/), [`yarn`](https://yarnpkg.com/), `npm` (included with Node.js).
+- **JavaScript runtimes:** [Bun](https://bun.com/) **(Recommended)** or [Node.js](https://nodejs.org/) (v18.x or higher).
+- **Package Manager:** `bun` (included with Bun itself), [`pnpm`](https://pnpm.io/), [`yarn`](https://yarnpkg.com/), or `npm` (included with Node.js).
 - **Git:** To clone the repository.
 - **Code Editor:** [Visual Studio Code](https://code.visualstudio.com/) or [VSCodium](https://vscodium.com/) is highly recommended.
 
