@@ -13,13 +13,12 @@ import KHOSTable from "@/components/tables/KHOSTable";
 import KHOSWithAverageTable from "@/components/tables/KHOSWithAverageTable";
 import UTBKIRTTable from "@/components/tables/UTBKIRTTable";
 import UTBKRealTable from "@/components/tables/UTBKRealTable";
+import TOEFLTable from "@/components/tables/TOEFLTable";
+import TOAFLTable from "@/components/tables/TOAFLTable";
 import LeftMenu from "@/components/clients/LeftMenu";
 import SearchInput from "@/components/clients/SearchInput";
 import InstitutionButton from "@/components/clients/InstitutionButton";
 import { formatTKAIdString, toArrayOfString } from "@/utils";
-import TOEFLTable from "@/components/tables/TOEFLTable";
-import TOAFLTable from "@/components/tables/TOAFLTable";
-import TKATable from "@/components/tables/TKATable";
 
 type Props = Readonly<{
   params: Promise<{ [key: string]: string }>;
@@ -40,16 +39,10 @@ export default async function Page({ params, searchParams }: Props) {
 
   if (!(variable.type in json)) notFound();
 
-  if (variable.type == "utbk") {
-    const data = json.utbk.find((d) => d.date == variable.date);
-    if (data == undefined || !data.types.includes(variable.lesson)) notFound();
-  } else if (variable.type == "tka") {
-    const data = json.tka.find((d) => d.date == variable.date);
-    if (data == undefined || !data.types.includes(variable.lesson)) notFound();
-  } else if (variable.type == "toefl") {
-    const data = json.toefl.find((d) => d.date == variable.date);
-    if (data == undefined || !data.types.includes(variable.lesson)) notFound();
-  }
+  const date = json[variable.type as keyof typeof json]?.find(
+    (d) => d.date === variable.date,
+  );
+  if (!date || !date.types.includes(variable.lesson)) notFound();
 
   const filePath = path.join(
     process.cwd(),
