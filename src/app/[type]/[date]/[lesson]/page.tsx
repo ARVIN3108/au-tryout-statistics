@@ -11,6 +11,7 @@ import SOSHUMWithAverageTable from "@/components/tables/SOSHUMWithAverageTable";
 import SOSHUMWithCivicsTable from "@/components/tables/SOSHUMWithCivicsTable";
 import KHOSTable from "@/components/tables/KHOSTable";
 import KHOSWithAverageTable from "@/components/tables/KHOSWithAverageTable";
+import TKATable from "@/components/tables/TKATable";
 import UTBKIRTTable from "@/components/tables/UTBKIRTTable";
 import UTBKRealTable from "@/components/tables/UTBKRealTable";
 import TOEFLTable from "@/components/tables/TOEFLTable";
