@@ -24,7 +24,7 @@ export default function KHOSWithAverageTable({ data }: { data: Row[] }) {
             BNR
           </th>
           <th scope="col" className="p-3">
-            <span className="absolute -mt-0.5 -ml-5">ISTIMA'</span>
+            <span className="absolute -mt-0.5 -ml-5">ISTIMA&apos;</span>
             <br />
             SLH
           </th>

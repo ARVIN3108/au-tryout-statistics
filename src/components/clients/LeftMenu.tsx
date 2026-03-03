@@ -4,6 +4,7 @@ import { Menu, Button } from "@material-tailwind/react";
 import json from "../../../date.json";
 import { useRouter } from "next/navigation";
 import { buildURL, convertDateString, isLessonAvailable } from "@/utils";
+import { useCallback } from "react";
 
 export default function LeftMenu({
   variable,
@@ -12,13 +13,57 @@ export default function LeftMenu({
   variable: { [key: string]: string };
   searchVar: { [key: string]: string | string[] | undefined };
 }) {
-  const route = useRouter();
-  const data =
-    variable.type == "utbk"
-      ? json.utbk
-      : variable.type == "tka"
-        ? json.tka
-        : json.toefl;
+  const router = useRouter();
+  const data = json[variable.type as keyof typeof json];
+
+  const routeType = useCallback(
+    (type: string, method = "push") => {
+      if (variable.type != type) {
+        const jsonType = json[type as keyof typeof json][0];
+        const url = buildURL(`/${type}/${jsonType.date}/${jsonType.types[0]}`, {
+          q: searchVar.q,
+          i: searchVar.i,
+        });
+        if (method == "push") router.push(url);
+        else if (method == "fetch") router.prefetch(url);
+      }
+    },
+    [variable.type, searchVar.q, searchVar.i, router],
+  );
+
+  const routeDate = useCallback(
+    (key: number, method = "push") => {
+      if (data[key].date != variable.date) {
+        const url = buildURL(
+          `/${variable.type}/${data[key].date}/${isLessonAvailable(data[key].types[0], variable.lesson)}`,
+          {
+            q: searchVar.q,
+            i: searchVar.i,
+          },
+        );
+        if (method == "push") router.push(url);
+        else if (method == "fetch") router.prefetch(url);
+      }
+    },
+    [variable, searchVar.q, searchVar.i, data, router],
+  );
+
+  const routeLesson = useCallback(
+    (lesson: string, method = "push") => {
+      if (variable.lesson != lesson.toLowerCase()) {
+        const url = buildURL(
+          `/${variable.type}/${variable.date}/${lesson.toLowerCase()}`,
+          {
+            q: searchVar.q,
+            i: searchVar.i,
+          },
+        );
+        if (method == "push") router.push(url);
+        else if (method == "fetch") router.prefetch(url);
+      }
+    },
+    [variable, searchVar.q, searchVar.i, router],
+  );
 
   return (
     <>
@@ -26,7 +71,7 @@ export default function LeftMenu({
         <Menu.Trigger
           as={Button}
           ripple={false}
-          className="inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+          className="ml-2 inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
         >
           <svg
             className="me-2.5 h-3 w-3 scale-150 text-gray-500 dark:text-gray-400"
@@ -72,26 +117,11 @@ export default function LeftMenu({
             <Menu.Item
               as="li"
               className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-              onMouseEnter={() => {
-                const url = buildURL(
-                  `/utbk/${json.utbk[0].date}/${json.utbk[0].types[0]}`,
-                  {
-                    q: searchVar.q,
-                    i: searchVar.i,
-                  },
-                );
-                route.prefetch(url);
-              }}
-              onClick={() => {
-                const url = buildURL(
-                  `/utbk/${json.utbk[0].date}/${json.utbk[0].types[0]}`,
-                  {
-                    q: searchVar.q,
-                    i: searchVar.i,
-                  },
-                );
-                route.push(url);
-              }}
+              onMouseEnter={useCallback(
+                () => routeType("utbk", "fetch"),
+                [routeType],
+              )}
+              onClick={useCallback(() => routeType("utbk"), [routeType])}
             >
               <input
                 id="type-utbk"
@@ -104,7 +134,7 @@ export default function LeftMenu({
               />
               <label
                 htmlFor="type-utbk"
-                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
               >
                 SNBT - UTBK
               </label>
@@ -112,26 +142,11 @@ export default function LeftMenu({
             <Menu.Item
               as="li"
               className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-              onMouseEnter={() => {
-                const url = buildURL(
-                  `/tka/${json.tka[0].date}/${json.tka[0].types[0]}`,
-                  {
-                    q: searchVar.q,
-                    i: searchVar.i,
-                  },
-                );
-                route.prefetch(url);
-              }}
-              onClick={() => {
-                const url = buildURL(
-                  `/tka/${json.tka[0].date}/${json.tka[0].types[0]}`,
-                  {
-                    q: searchVar.q,
-                    i: searchVar.i,
-                  },
-                );
-                route.push(url);
-              }}
+              onMouseEnter={useCallback(
+                () => routeType("tka", "fetch"),
+                [routeType],
+              )}
+              onClick={useCallback(() => routeType("tka"), [routeType])}
             >
               <input
                 id="type-tka"
@@ -144,7 +159,7 @@ export default function LeftMenu({
               />
               <label
                 htmlFor="type-tka"
-                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
               >
                 SNBP - TKA
               </label>
@@ -152,26 +167,11 @@ export default function LeftMenu({
             <Menu.Item
               as="li"
               className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-              onMouseEnter={() => {
-                const url = buildURL(
-                  `/toefl/${json.toefl[0].date}/${json.toefl[0].types[0]}`,
-                  {
-                    q: searchVar.q,
-                    i: searchVar.i,
-                  },
-                );
-                route.prefetch(url);
-              }}
-              onClick={() => {
-                const url = buildURL(
-                  `/toefl/${json.toefl[0].date}/${json.toefl[0].types[0]}`,
-                  {
-                    q: searchVar.q,
-                    i: searchVar.i,
-                  },
-                );
-                route.push(url);
-              }}
+              onMouseEnter={useCallback(
+                () => routeType("toefl", "fetch"),
+                [routeType],
+              )}
+              onClick={useCallback(() => routeType("toefl"), [routeType])}
             >
               <input
                 id="type-toefl"
@@ -184,7 +184,7 @@ export default function LeftMenu({
               />
               <label
                 htmlFor="type-toefl"
-                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
               >
                 TOEFL - TOAFL
               </label>
@@ -237,35 +237,14 @@ export default function LeftMenu({
           className="z-10 divide-y divide-gray-100 rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-800"
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
-            {data.map((d, key) => (
+            {data.map((result, key) => (
               <Menu.Item
                 as="li"
                 key={key}
                 className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                onMouseEnter={() => {
-                  if (data[key].date != variable.date) {
-                    const url = buildURL(
-                      `/${variable.type}/${data[key].date}/${isLessonAvailable(data[key].types[0], variable.lesson)}`,
-                      {
-                        q: searchVar.q,
-                        i: searchVar.i,
-                      },
-                    );
-                    route.prefetch(url);
-                  }
-                }}
-                onClick={() => {
-                  if (data[key].date != variable.date) {
-                    const url = buildURL(
-                      `/${variable.type}/${data[key].date}/${isLessonAvailable(data[key].types[0], variable.lesson)}`,
-                      {
-                        q: searchVar.q,
-                        i: searchVar.i,
-                      },
-                    );
-                    route.push(url);
-                  }
-                }}
+                /* eslint-disable react/jsx-no-bind */
+                onMouseEnter={() => routeDate(key, "fetch")}
+                onClick={() => routeDate(key)}
               >
                 <input
                   id={`date-` + key}
@@ -278,9 +257,9 @@ export default function LeftMenu({
                 />
                 <label
                   htmlFor={`date-` + key}
-                  className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-gray-300"
+                  className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  {convertDateString(d.date)}
+                  {convertDateString(result.date)}
                 </label>
               </Menu.Item>
             ))}
@@ -337,55 +316,33 @@ export default function LeftMenu({
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             {data
-              .find((d) => d.date == variable.date)
-              ?.types.map((d, key) => (
+              .find((result) => result.date == variable.date)
+              ?.types.map((lesson, key) => (
                 <Menu.Item
                   as="li"
                   key={key}
                   className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  onMouseEnter={() => {
-                    if (variable.lesson != d.toLowerCase()) {
-                      const url = buildURL(
-                        `/${variable.type}/${variable.date}/${d.toLowerCase()}`,
-                        {
-                          q: searchVar.q,
-                          i: searchVar.i,
-                        },
-                      );
-                      route.prefetch(url);
-                    }
-                  }}
-                  onClick={() => {
-                    if (variable.lesson != d.toLowerCase()) {
-                      const url = buildURL(
-                        `/${variable.type}/${variable.date}/${d.toLowerCase()}`,
-                        {
-                          q: searchVar.q,
-                          i: searchVar.i,
-                        },
-                      );
-                      route.push(url);
-                    }
-                  }}
+                  onMouseEnter={() => routeLesson(lesson, "fetch")}
+                  onClick={() => routeLesson(lesson)}
                 >
                   <input
                     id={`type-` + key}
                     type="radio"
                     defaultValue=""
                     name="type-radio"
-                    checked={variable.lesson == d}
+                    checked={variable.lesson == lesson}
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                     readOnly
                   />
                   <label
                     htmlFor={`type-` + key}
-                    className="ms-2 w-full cursor-pointer rounded-sm text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="ms-2 w-full cursor-pointer rounded-sm text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {d.toLowerCase() == "real"
-                      ? "ASLI / " + d.toUpperCase()
-                      : d.toLowerCase() == "toafl"
-                        ? d.toUpperCase() + " / KHOS"
-                        : d.toUpperCase()}
+                    {lesson.toLowerCase() == "real"
+                      ? "ASLI / " + lesson.toUpperCase()
+                      : lesson.toLowerCase() == "toafl"
+                        ? lesson.toUpperCase() + " / KHOS"
+                        : lesson.toUpperCase()}
                   </label>
                 </Menu.Item>
               ))}

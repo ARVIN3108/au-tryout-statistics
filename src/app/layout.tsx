@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import Image from "next/image";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 // import MigrationWarn from "@/components/clients/MigrationWarn";
@@ -55,8 +55,9 @@ export default async function RootLayout({
                       height="44"
                       width="44"
                       alt="AU Logo"
+                      className="size-10.5 sm:size-11"
                     />
-                    <span className="font-Revans self-center px-3 pt-3 text-2xl font-semibold whitespace-nowrap sm:pt-0">
+                    <span className="self-center px-3 pt-3 text-xl font-semibold whitespace-nowrap sm:pt-0 sm:text-2xl">
                       Amanatul Ummah Try Out & TKA Statistics
                     </span>
                   </div>

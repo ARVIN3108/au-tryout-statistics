@@ -2,7 +2,7 @@
 
 import { buildURL, debounce, DebounceFunction, toArrayOfString } from "@/utils";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 
 export default function SearchInput({
   searchVar,
@@ -33,17 +33,20 @@ export default function SearchInput({
       className="block w-60 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
       placeholder="Cari Nama Siswa / No. Peserta"
       value={searchTerm}
-      onChange={(e) => {
-        const searchTerm = e.target.value;
-        const url = buildURL(pathname, {
-          q: searchTerm,
-          i: toArrayOfString(searchVar.i).filter((i) =>
-            institutions.includes(i),
-          ),
-        });
-        setSearchTerm(searchTerm);
-        debouncedSearch(url);
-      }}
+      onChange={useCallback(
+        (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+          const searchTerm = e.target.value;
+          const url = buildURL(pathname, {
+            q: searchTerm,
+            i: toArrayOfString(searchVar.i).filter((i) =>
+              institutions.includes(i),
+            ),
+          });
+          setSearchTerm(searchTerm);
+          debouncedSearch(url);
+        },
+        [debouncedSearch, institutions, pathname, searchVar.i],
+      )}
     />
   );
 }

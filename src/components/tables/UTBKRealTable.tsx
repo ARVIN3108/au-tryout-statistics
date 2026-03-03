@@ -20,7 +20,7 @@ export default function UTBKRealTable({ data }: { data: Row[] }) {
             Nama Siswa
           </th>
           <th scope="col" className="p-4">
-            <span className="absolute -mt-0.5 ml-[20px]">PU</span>
+            <span className="absolute -mt-0.5 ml-5">PU</span>
             <br />
             BNR
           </th>
@@ -47,7 +47,7 @@ export default function UTBKRealTable({ data }: { data: Row[] }) {
             NIL
           </th>
           <th scope="col" className="p-4">
-            <span className="absolute -mt-0.5 ml-[19px]">PK</span>
+            <span className="absolute -mt-0.5 ml-4.75">PK</span>
             <br />
             BNR
           </th>

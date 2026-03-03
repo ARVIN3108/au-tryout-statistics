@@ -143,8 +143,9 @@ export default async function Page({ params, searchParams }: Props) {
         </div>
       </div>
       <div className="relative overflow-x-auto">
-        {variable.type == "utbk"
-          ? (variable.lesson == "irt" && <UTBKIRTTable data={data.tryout} />) ||
+        {data.tryout.length != 0 ? (
+          variable.type == "utbk" ? (
+            (variable.lesson == "irt" && <UTBKIRTTable data={data.tryout} />) ||
             (variable.lesson == "real" && <UTBKRealTable data={data.tryout} />)
           : variable.type == "tka"
             ? variable.date == json.tka[json.tka.length - 1].date

@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export default function MigrationWarn() {
   const [isActive, setActive] = useState(false);
 
   return (
     <div
-      className={`${isActive && "animate-fadeOut"} sticky start-0 top-0 z-1 mb-4 flex w-full items-center border-t bg-blue-50 p-3 text-blue-900 opacity-90 dark:bg-blue-950 dark:text-blue-400`}
+      className={`${isActive && "animate-fadeOut"} sticky inset-s-0 top-0 z-1 mb-4 flex w-full items-center border-t bg-blue-50 p-3 text-blue-900 opacity-90 dark:bg-blue-950 dark:text-blue-400`}
       role="alert"
     >
       <svg
@@ -64,7 +64,7 @@ export default function MigrationWarn() {
         type="button"
         className="-mx-1.5 -my-1.5 ms-auto inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg p-1.5 hover:bg-blue-200 focus:bg-blue-900 focus:ring-2 dark:hover:bg-blue-900 dark:focus:ring-blue-200"
         aria-label="Close"
-        onClick={() => setActive(true)}
+        onClick={useCallback(() => setActive(true), [])}
       >
         <span className="sr-only">Close</span>
         <svg

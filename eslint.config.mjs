@@ -14,6 +14,13 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      "react-hooks/exhaustive-deps": "error",
+      "react/jsx-key": "error",
+      "react/jsx-no-bind": "warn",
+    },
+  },
   eslintConfigPrettier,
 ]);
 

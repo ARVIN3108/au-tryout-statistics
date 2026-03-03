@@ -13,7 +13,7 @@ export type DebounceFunction = <T extends (...args: string[]) => void>(
 export function debounce<T extends (...args: T[]) => T>(
   func: T,
   delay: number,
-): (...args: Parameters<T>) => void {
+) {
   // Use `NodeJS.Timeout` or `number` (depending on environment) for the timeout ID
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
@@ -38,7 +38,7 @@ export function debounce<T extends (...args: T[]) => T>(
  * * @param dateString The date string in "DD-MM-YY" format.
  * @returns The formatted date string according to the 'id-ID' locale.
  */
-export function convertDateString(dateString: string): string {
+export function convertDateString(dateString: string) {
   // Split the input string into day, month, and year parts
   const parts: string[] = dateString.split("-");
 
@@ -97,7 +97,7 @@ type Params = {
  * @param params The parameter object containing key-value pairs (Params type).
  * @returns The final URL with the query string appended, or just the path if no parameters are present.
  */
-export function buildURL(path: string, params: Params): string {
+export function buildURL(path: string, params: Params) {
   const searchParams = new URLSearchParams();
 
   Object.keys(params).forEach((key) => {
@@ -125,9 +125,7 @@ export function buildURL(path: string, params: Params): string {
  * @param value The value, which may be of type string | string[] | undefined | null.
  * @returns A guaranteed array of strings (string[]).
  */
-export function toArrayOfString(
-  value: string | string[] | undefined | null,
-): string[] {
+export function toArrayOfString(value: string | string[] | undefined | null) {
   // 1. Handle undefined, null, or other "nullish" values
   if (value === undefined || value === null) {
     return [];

@@ -80,6 +80,7 @@ export default function InstitutionButton({
               key={key}
               closeOnClick={false}
               className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              // eslint-disable-next-line react/jsx-no-bind
               onChange={() => {
                 const url = buildURL(pathname, {
                   q: searchVar.q,
