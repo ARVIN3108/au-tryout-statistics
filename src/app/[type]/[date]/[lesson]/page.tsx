@@ -147,41 +147,64 @@ export default async function Page({ params, searchParams }: Props) {
           variable.type == "utbk" ? (
             (variable.lesson == "irt" && <UTBKIRTTable data={data.tryout} />) ||
             (variable.lesson == "real" && <UTBKRealTable data={data.tryout} />)
-          : variable.type == "tka"
-            ? variable.date == json.tka[json.tka.length - 1].date
-              ? (variable.lesson == "saintek" && (
-                  <SAINTEKOldTable data={data.tryout} />
-                )) ||
-                (variable.lesson == "soshum" && (
-                  <SOSHUMWithAverageTable data={data.tryout} />
-                ))
-              : (variable.lesson == "saintek" &&
-                  (compatibility.tka.includes("CIVICS") ? (
-                    <SAINTEKWithCivicsTable data={data.tryout} />
-                  ) : compatibility.tka.includes("AVERAGE") ? (
-                    <SAINTEKWithAverageTable data={data.tryout} />
-                  ) : (
-                    <SAINTEKTable data={data.tryout} />
-                  ))) ||
-                (variable.lesson == "soshum" &&
-                  (compatibility.tka.includes("CIVICS") ? (
-                    <SOSHUMWithCivicsTable data={data.tryout} />
-                  ) : compatibility.tka.includes("AVERAGE") ? (
-                    <SOSHUMWithAverageTable data={data.tryout} />
-                  ) : (
-                    <SOSHUMTable data={data.tryout} />
-                  ))) ||
-                (variable.lesson == "khos" &&
-                  (compatibility.tka.includes("AVERAGE") ? (
-                    <KHOSWithAverageTable data={data.tryout} />
-                  ) : (
-                    <KHOSTable data={data.tryout} />
-                  ))) ||
-                (variable.lesson == "tka" && <TKATable data={data.tryout} />)
-            : (variable.lesson == "toefl" && (
-                <TOEFLTable data={data.tryout} />
+          ) : variable.type == "tka" ? (
+            variable.date == json.tka[json.tka.length - 1].date ? (
+              (variable.lesson == "saintek" && (
+                <SAINTEKOldTable data={data.tryout} />
               )) ||
-              (variable.lesson == "toafl" && <TOAFLTable data={data.tryout} />)}
+              (variable.lesson == "soshum" && (
+                <SOSHUMWithAverageTable data={data.tryout} />
+              ))
+            ) : (
+              (variable.lesson == "saintek" &&
+                (compatibility.tka.includes("CIVICS") ? (
+                  <SAINTEKWithCivicsTable data={data.tryout} />
+                ) : compatibility.tka.includes("AVERAGE") ? (
+                  <SAINTEKWithAverageTable data={data.tryout} />
+                ) : (
+                  <SAINTEKTable data={data.tryout} />
+                ))) ||
+              (variable.lesson == "soshum" &&
+                (compatibility.tka.includes("CIVICS") ? (
+                  <SOSHUMWithCivicsTable data={data.tryout} />
+                ) : compatibility.tka.includes("AVERAGE") ? (
+                  <SOSHUMWithAverageTable data={data.tryout} />
+                ) : (
+                  <SOSHUMTable data={data.tryout} />
+                ))) ||
+              (variable.lesson == "khos" &&
+                (compatibility.tka.includes("AVERAGE") ? (
+                  <KHOSWithAverageTable data={data.tryout} />
+                ) : (
+                  <KHOSTable data={data.tryout} />
+                ))) ||
+              (variable.lesson == "tka" && <TKATable data={data.tryout} />)
+            )
+          ) : (
+            (variable.lesson == "toefl" && <TOEFLTable data={data.tryout} />) ||
+            (variable.lesson == "toafl" && <TOAFLTable data={data.tryout} />)
+          )
+        ) : (
+          <div className="flex w-full flex-col items-center justify-center rounded-lg bg-gray-50 px-4 py-8 text-center text-sm font-bold text-gray-700 opacity-90 dark:bg-gray-800 dark:text-gray-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              className="h-12 w-12 text-black dark:text-white"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.475 5.458c-.284 0-.514-.237-.47-.517C4.28 3.24 5.576 2 7.825 2c2.25 0 3.767 1.36 3.767 3.215 0 1.344-.665 2.288-1.79 2.973-1.1.659-1.414 1.118-1.414 2.01v.03a.5.5 0 0 1-.5.5h-.77a.5.5 0 0 1-.5-.495l-.003-.2c-.043-1.221.477-2.001 1.645-2.712 1.03-.632 1.397-1.135 1.397-2.028 0-.979-.758-1.698-1.926-1.698-1.009 0-1.71.529-1.938 1.402-.066.254-.278.461-.54.461h-.777ZM7.496 14c.622 0 1.095-.474 1.095-1.09 0-.618-.473-1.092-1.095-1.092-.606 0-1.087.474-1.087 1.091S6.89 14 7.496 14"
+              />
+            </svg>
+            <h3 className="mt-4 text-xl font-medium text-black dark:text-white">
+              Peserta Try Out tidak dapat ditemukan
+            </h3>
+            <p className="mt-2">
+              Maaf, hasil peserta tryout yang kamu cari tidak dapat ditemukan.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
