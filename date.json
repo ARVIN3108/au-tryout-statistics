@@ -27,7 +27,7 @@
     },
     {
       "date": "18-1-26",
-      "types": ["real"],
+      "types": ["irt", "real"],
       "compatibility": []
     },
     {
