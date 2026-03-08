@@ -55,10 +55,7 @@ export default async function Page({ params, searchParams }: Props) {
     variable.lesson + ".xlsx",
   );
 
-  const data: { [key: string]: Row[] | CellValue[] } = {
-    default: [],
-    institutions: [],
-  };
+  const data: { [key: string]: Row[] | (CellValue | null)[] } = {};
 
   try {
     const cachedData = await readXlsxFile(filePath);
@@ -95,7 +92,7 @@ export default async function Page({ params, searchParams }: Props) {
             .includes(`${searchVar.q}`.toLowerCase()) ||
           student[0]?.toString().toLowerCase() ==
             `${searchVar.q}`.toLowerCase() ||
-          formatTKAIdString(student[0]?.toString().toLowerCase()) ==
+          formatTKAIdString(student[0]?.toString().toLowerCase() ?? "") ==
             `${searchVar.q}`.toLowerCase()
         : student[2]
             ?.toString()
