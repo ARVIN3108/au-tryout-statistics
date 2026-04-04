@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import json from "../../../../../date.json";
 import * as path from "path";
-import readXlsxFile, { CellValue, Row } from "read-excel-file/node";
+import { readSheet, CellValue, Row } from "read-excel-file/node";
 import SAINTEKOldTable from "@/components/tables/SAINTEKOldTable";
 import SAINTEKTable from "@/components/tables/SAINTEKTable";
 import SAINTEKWithAverageTable from "@/components/tables/SAINTEKWithAverageTable";
@@ -58,7 +58,7 @@ export default async function Page({ params, searchParams }: Props) {
   const data: { [key: string]: Row[] | (CellValue | null)[] } = {};
 
   try {
-    const cachedData = await readXlsxFile(filePath);
+    const cachedData = await readSheet(filePath);
     data.tryout = cachedData;
     const institutions = cachedData.map((s) => s[s.length - 1]);
     data.institutions = [...new Set(institutions)];
