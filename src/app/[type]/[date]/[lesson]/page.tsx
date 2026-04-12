@@ -14,12 +14,14 @@ import KHOSWithAverageTable from "@/components/tables/KHOSWithAverageTable";
 import TKATable from "@/components/tables/TKATable";
 import UTBKIRTTable from "@/components/tables/UTBKIRTTable";
 import UTBKRealTable from "@/components/tables/UTBKRealTable";
+import UTBKRealWithMinusTable from "@/components/tables/UTBKRealWithMinusTable";
 import TOEFLTable from "@/components/tables/TOEFLTable";
 import TOAFLTable from "@/components/tables/TOAFLTable";
 import LeftMenu from "@/components/clients/LeftMenu";
 import SearchInput from "@/components/clients/SearchInput";
 import InstitutionButton from "@/components/clients/InstitutionButton";
 import { formatTKAIdString, toArrayOfString } from "@/utils";
+import UTBKExternalRealWithMinusTable from "@/components/tables/UTBKExternalRealWithMinusTable";
 
 type Props = Readonly<{
   params: Promise<{ [key: string]: string }>;
@@ -67,7 +69,7 @@ export default async function Page({ params, searchParams }: Props) {
     throw err;
   }
 
-  const compatibility: { [key: string]: string[] } = {
+  const compatibility = {
     utbk: json.utbk.find((s) => s.date == variable.date)?.compatibility || [],
     tka: json.tka.find((s) => s.date == variable.date)?.compatibility || [],
   };
@@ -106,11 +108,15 @@ export default async function Page({ params, searchParams }: Props) {
     <div className="px-2 py-4">
       <div className="flex flex-col flex-wrap items-center justify-between space-y-4 pb-4 lg:flex-row lg:space-y-0">
         <div className="flex flex-col flex-wrap items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
-          <LeftMenu variable={variable} searchVar={searchVar} />
+          <LeftMenu
+            variable={variable}
+            searchVar={searchVar}
+            compatibility={compatibility}
+          />
         </div>
         <label htmlFor="table-search" className="sr-only"></label>
         <div className="flex flex-col flex-wrap items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
-          {variable.lesson != "tka" && (
+          {variable.lesson != "tka" && variable.lesson != "external" && (
             <InstitutionButton
               institutions={data.institutions as string[]}
               searchVar={searchVar}
@@ -142,8 +148,27 @@ export default async function Page({ params, searchParams }: Props) {
       <div className="relative overflow-x-auto">
         {data.tryout.length != 0 ? (
           variable.type == "utbk" ? (
-            (variable.lesson == "irt" && <UTBKIRTTable data={data.tryout} />) ||
-            (variable.lesson == "real" && <UTBKRealTable data={data.tryout} />)
+            compatibility.utbk.includes("EXTERNAL") ? (
+              (variable.lesson == "irt" && (
+                <UTBKIRTTable data={data.tryout} />
+              )) ||
+              ((variable.lesson == "real" || variable.lesson == "mix") && (
+                <UTBKRealWithMinusTable
+                  data={data.tryout}
+                  mix={variable.lesson == "mix"}
+                />
+              )) ||
+              (variable.lesson == "external" && (
+                <UTBKExternalRealWithMinusTable data={data.tryout} />
+              ))
+            ) : (
+              (variable.lesson == "irt" && (
+                <UTBKIRTTable data={data.tryout} />
+              )) ||
+              (variable.lesson == "real" && (
+                <UTBKRealTable data={data.tryout} />
+              ))
+            )
           ) : variable.type == "tka" ? (
             variable.date == json.tka[json.tka.length - 1].date ? (
               (variable.lesson == "saintek" && (

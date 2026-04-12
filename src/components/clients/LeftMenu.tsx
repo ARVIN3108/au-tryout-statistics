@@ -9,9 +9,11 @@ import { useCallback } from "react";
 export default function LeftMenu({
   variable,
   searchVar,
+  compatibility,
 }: {
   variable: { [key: string]: string };
   searchVar: { [key: string]: string | string[] | undefined };
+  compatibility: { [key: string]: string[] };
 }) {
   const router = useRouter();
   const data = json[variable.type as keyof typeof json];
@@ -289,11 +291,21 @@ export default function LeftMenu({
               d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"
             />
           </svg>
-          {variable.lesson.toLowerCase() == "real"
-            ? "ASLI / " + variable.lesson.toUpperCase()
-            : variable.lesson.toLowerCase() == "toafl"
-              ? variable.lesson.toUpperCase() + " / KHOS"
-              : variable.lesson.toUpperCase()}
+          {compatibility.utbk.includes("EXTERNAL")
+            ? (variable.lesson.toLowerCase() == "real" &&
+                "ASLI / " +
+                  variable.lesson.toUpperCase() +
+                  " (AMANATUL UMMAH SAJA)") ||
+              (variable.lesson.toLowerCase() == "external" &&
+                "ASLI / REAL (" + variable.lesson.toUpperCase() + " SAJA)") ||
+              (variable.lesson.toLowerCase() == "mix" &&
+                "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)") ||
+              variable.lesson.toUpperCase() + " (AMANATUL UMMAH SAJA)"
+            : variable.lesson.toLowerCase() == "real"
+              ? "ASLI / " + variable.lesson.toUpperCase()
+              : variable.lesson.toLowerCase() == "toafl"
+                ? variable.lesson.toUpperCase() + " / KHOS"
+                : variable.lesson.toUpperCase()}
           <svg
             className="ms-2.5 h-3 w-3"
             aria-hidden="true"
@@ -338,11 +350,21 @@ export default function LeftMenu({
                     htmlFor={`type-` + key}
                     className="ms-2 w-full cursor-pointer rounded-sm text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {lesson.toLowerCase() == "real"
-                      ? "ASLI / " + lesson.toUpperCase()
-                      : lesson.toLowerCase() == "toafl"
-                        ? lesson.toUpperCase() + " / KHOS"
-                        : lesson.toUpperCase()}
+                    {compatibility.utbk.includes("EXTERNAL")
+                      ? (lesson.toLowerCase() == "real" &&
+                          "ASLI / " +
+                            lesson.toUpperCase() +
+                            " (AMANATUL UMMAH SAJA)") ||
+                        (lesson.toLowerCase() == "external" &&
+                          "ASLI / REAL (" + lesson.toUpperCase() + " SAJA)") ||
+                        (lesson.toLowerCase() == "mix" &&
+                          "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)") ||
+                        lesson.toUpperCase() + " (AMANATUL UMMAH SAJA)"
+                      : lesson.toLowerCase() == "real"
+                        ? "ASLI / " + lesson.toUpperCase()
+                        : lesson.toLowerCase() == "toafl"
+                          ? lesson.toUpperCase() + " / KHOS"
+                          : lesson.toUpperCase()}
                   </label>
                 </Menu.Item>
               ))}
