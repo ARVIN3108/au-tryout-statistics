@@ -16,10 +16,10 @@
     "next": "16.2.4",
     "react": "19.2.5",
     "react-dom": "19.2.5",
-    "read-excel-file": "^8.0.3"
+    "read-excel-file": "^9.0.4"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1031.0",
+    "@aws-sdk/client-s3": "^3.1032.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
