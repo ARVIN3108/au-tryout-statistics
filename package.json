@@ -16,10 +16,10 @@
     "next": "16.2.4",
     "react": "19.2.5",
     "react-dom": "19.2.5",
-    "read-excel-file": "^9.0.6"
+    "read-excel-file": "^9.0.7"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1037.0",
+    "@aws-sdk/client-s3": "^3.1041.0",
     "@tailwindcss/postcss": "^4.2.4",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
@@ -29,7 +29,7 @@
     "eslint-config-next": "16.2.4",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.7.2",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3"
   }
