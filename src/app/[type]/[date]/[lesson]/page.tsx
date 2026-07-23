@@ -59,9 +59,47 @@ export default async function Page({ params, searchParams }: Props) {
 
   const data: { [key: string]: Row[] | (CellValue | null)[] } = {};
 
+  // function filePathGen(date: string, lesson = "irt") {
+  //   return path.join(
+  //     process.cwd(),
+  //     "src",
+  //     "assets",
+  //     "data",
+  //     variable.type,
+  //     date,
+  //     lesson + ".xlsx",
+  //   );
+  // }
+
+  const getSafeRoundedValue = (
+    dataArray: any[][] | undefined | null,
+    colIdx: number,
+  ): number | null => {
+    // 1. Check if the outer array and the specific row exist
+    const row = dataArray?.[0];
+    if (!row) return null;
+
+    // 2. Extract the raw value
+    const rawValue = row[colIdx];
+
+    // 3. Handle null/undefined values immediately
+    if (rawValue === null || rawValue === undefined || rawValue === "") {
+      return null;
+    }
+
+    // 4. Parse and validate the number
+    const parsed = parseFloat(String(rawValue));
+
+    // 5. Check if parsing resulted in a valid number (not NaN)
+    return isNaN(parsed) ? null : Math.round(parsed);
+  };
+
   try {
     const cachedData = await readSheet(filePath);
     data.tryout = cachedData;
+    // data.tryoutA = await readSheet(filePathGen("18-1-26"));
+    // data.tryoutB = await readSheet(filePathGen("1-3-26"));
+    // data.tryoutC = await readSheet(filePathGen("7-3-26"));
     const institutions = cachedData.map((s) => s[s.length - 1]);
     data.institutions = [...new Set(institutions)];
   } catch (err) {
@@ -85,7 +123,25 @@ export default async function Page({ params, searchParams }: Props) {
     );
   }
 
-  if (typeof searchVar.q === "string" && searchVar.q.trim().length > 0)
+  function filterTO(data: Row[]) {
+    return data.filter(
+      (student) =>
+        student[2]
+          ?.toString()
+          .toLowerCase()
+          .includes(`${searchVar.q}`.toLowerCase()) ||
+        student[1]?.toString().toLowerCase() == `${searchVar.q}`.toLowerCase(),
+    );
+  }
+
+  if (typeof searchVar.q === "string" && searchVar.q.trim().length > 0) {
+    // data.tryoutA = filterTO(data.tryoutA);
+    // data.tryoutB = filterTO(data.tryoutB);
+    // data.tryoutC = filterTO(data.tryoutC);
+    // data.tryoutD = filterTO(data.tryoutD);
+    // data.tryoutE = filterTO(data.tryoutE);
+    // data.tryoutF = filterTO(data.tryoutF);
+    // data.tryoutG = filterTO(data.tryoutG);
     data.tryout = data.tryout.filter((student) =>
       variable.lesson == "tka"
         ? student[1]
@@ -103,6 +159,7 @@ export default async function Page({ params, searchParams }: Props) {
           student[1]?.toString().toLowerCase() ==
             `${searchVar.q}`.toLowerCase(),
     );
+  }
 
   return (
     <div className="px-2 py-4">
@@ -144,6 +201,24 @@ export default async function Page({ params, searchParams }: Props) {
             />
           </div>
         </div>
+      </div>
+      <div className="bg-amber-200">
+        {/* <span>18-1-26 (IRT): {getSafeRoundedValue(data.tryoutA, 11)}</span>
+        <br />
+        <span>1-3-26 (IRT): {getSafeRoundedValue(data.tryoutB, 11)}</span>
+        <br />
+        <span>7-3-26 (IRT): {getSafeRoundedValue(data.tryoutC, 11)}</span> */}
+        {/*<br />
+        <span>
+          18-1-26 (Real):{" "}
+          {Math.round(parseFloat(data.tryoutC[0][11] as string))}
+        </span>
+        <br />
+        <span>25-1-26 (IRT): {getSafeRoundedValue(data.tryoutE, 11)}</span>
+        <br />
+        <span>1-2-26 (IRT): {getSafeRoundedValue(data.tryoutF, 11)}</span>
+        <br />
+        <span>22-2-26 (IRT): {getSafeRoundedValue(data.tryoutG, 11)}</span> */}
       </div>
       <div className="relative overflow-x-auto">
         {data.tryout.length != 0 ? (
