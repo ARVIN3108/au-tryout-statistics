@@ -3,7 +3,7 @@
 import { Menu, Button } from "@material-tailwind/react";
 import json from "../../../date.json";
 import { useRouter } from "next/navigation";
-import { buildURL, convertDateString, isLessonAvailable } from "@/utils";
+import { buildURL, convertDateString } from "@/utils";
 import { useCallback } from "react";
 
 export default function LeftMenu({
@@ -16,59 +16,232 @@ export default function LeftMenu({
   compatibility: { [key: string]: string[] };
 }) {
   const router = useRouter();
-  const data = json[variable.type as keyof typeof json];
 
-  const routeType = useCallback(
-    (type: string, method = "push") => {
-      if (variable.type != type) {
-        const jsonType = json[type as keyof typeof json][0];
-        const url = buildURL(`/${type}/${jsonType.date}/${jsonType.types[0]}`, {
-          q: searchVar.q,
-          i: searchVar.i,
-        });
-        if (method == "push") router.push(url);
-        else if (method == "fetch") router.prefetch(url);
-      }
-    },
-    [variable.type, searchVar.q, searchVar.i, router],
-  );
+  // 1. Safely navigate the 2-layer JSON hierarchy with fallbacks
+  const genData = json[variable.generation as keyof typeof json];
+  const data = genData[variable.type as keyof typeof genData];
 
-  const routeDate = useCallback(
-    (key: number, method = "push") => {
-      if (data[key].date != variable.date) {
+  const routeGeneration = useCallback(
+    (newGeneration: string, method = "push") => {
+      // 1. Avoid unnecessary routing if the user is already on this generation
+      if (variable.generation !== newGeneration) {
+        const targetGenData = json[newGeneration as keyof typeof json];
+
+        // Safety guard against invalid generation keys
+        if (!targetGenData) return;
+
+        // 2. Resolve TYPE: Try to preserve current type, else fallback to first available
+        const availableTypes = Object.keys(targetGenData) as Array<
+          keyof typeof targetGenData
+        >;
+        const targetType = availableTypes.includes(
+          variable.type as keyof typeof targetGenData,
+        )
+          ? variable.type
+          : (availableTypes[0] as string);
+
+        if (!targetType) return;
+        const targetTypeArray =
+          targetGenData[targetType as keyof typeof targetGenData];
+        if (!targetTypeArray || targetTypeArray.length === 0) return;
+
+        // 3. Resolve DATE: Try to find matching date, else fallback to newest (index 0)
+        const matchedDateEntry = targetTypeArray.find(
+          (d) => d.date === variable.date,
+        );
+        const targetDateEntry = matchedDateEntry || targetTypeArray[0];
+
+        // 4. Resolve LESSON: Try to keep current lesson, else fallback to first available
+        const targetLesson = targetDateEntry.types.includes(variable.lesson)
+          ? variable.lesson
+          : targetDateEntry.types[0];
+
+        // 5. Construct URL preserving query parameters (?q=...&i=...)
         const url = buildURL(
-          `/${variable.type}/${data[key].date}/${isLessonAvailable(data[key].types[0], variable.lesson)}`,
+          `/${newGeneration}/${targetType}/${targetDateEntry.date}/${targetLesson}`,
           {
             q: searchVar.q,
             i: searchVar.i,
           },
         );
-        if (method == "push") router.push(url);
-        else if (method == "fetch") router.prefetch(url);
+
+        // 6. Execute navigation or prefetching
+        if (method === "push") router.push(url);
+        else if (method === "fetch") router.prefetch(url);
+      }
+    },
+    [variable, searchVar.q, searchVar.i, router],
+  );
+
+  const routeType = useCallback(
+    (newType: string, method = "push") => {
+      if (variable.type !== newType) {
+        const targetTypeArray = genData?.[newType as keyof typeof genData];
+        if (!targetTypeArray || targetTypeArray.length === 0) return;
+
+        // Step A: Attempt to preserve the current DATE
+        const matchedDateEntry = targetTypeArray.find(
+          (d) => d.date === variable.date,
+        );
+        const targetDateEntry = matchedDateEntry || targetTypeArray[0];
+
+        // Step B: Attempt to preserve the current LESSON within that resolved date
+        const targetLesson = targetDateEntry.types.includes(variable.lesson)
+          ? variable.lesson
+          : targetDateEntry.types[0];
+
+        // Step C: Build and execute safe route
+        const url = buildURL(
+          `/${variable.generation}/${newType}/${targetDateEntry.date}/${targetLesson}`,
+          {
+            q: searchVar.q,
+            i: searchVar.i,
+          },
+        );
+
+        if (method === "push") router.push(url);
+        else if (method === "fetch") router.prefetch(url);
+      }
+    },
+    [variable, searchVar.q, searchVar.i, genData, router],
+  );
+
+  const routeDate = useCallback(
+    (key: number, method = "push") => {
+      const targetDateEntry = data[key];
+
+      // Guard against out-of-bounds index or clicking the already active date
+      if (targetDateEntry && targetDateEntry.date !== variable.date) {
+        // Attempt to preserve the current LESSON; fallback to first lesson of the new date
+        const targetLesson = targetDateEntry.types.includes(variable.lesson)
+          ? variable.lesson
+          : targetDateEntry.types[0];
+
+        const url = buildURL(
+          `/${variable.generation}/${variable.type}/${targetDateEntry.date}/${targetLesson}`,
+          {
+            q: searchVar.q,
+            i: searchVar.i,
+          },
+        );
+
+        if (method === "push") router.push(url);
+        else if (method === "fetch") router.prefetch(url);
       }
     },
     [variable, searchVar.q, searchVar.i, data, router],
   );
 
   const routeLesson = useCallback(
-    (lesson: string, method = "push") => {
-      if (variable.lesson != lesson.toLowerCase()) {
+    (newLesson: string, method = "push") => {
+      const formattedLesson = newLesson.toLowerCase();
+
+      if (variable.lesson !== formattedLesson) {
+        // Find current active date object to validate lesson existence
+        const currentDateEntry =
+          data.find((d) => d.date === variable.date) || data[0];
+
+        // Safety Guard: Ensure target lesson actually exists in this date's schedule
+        if (
+          !currentDateEntry ||
+          !currentDateEntry.types.includes(formattedLesson)
+        )
+          return;
+
         const url = buildURL(
-          `/${variable.type}/${variable.date}/${lesson.toLowerCase()}`,
+          `/${variable.generation}/${variable.type}/${variable.date}/${formattedLesson}`,
           {
             q: searchVar.q,
             i: searchVar.i,
           },
         );
-        if (method == "push") router.push(url);
-        else if (method == "fetch") router.prefetch(url);
+
+        if (method === "push") router.push(url);
+        else if (method === "fetch") router.prefetch(url);
       }
     },
-    [variable, searchVar.q, searchVar.i, router],
+    [variable, searchVar.q, searchVar.i, data, router],
   );
 
   return (
     <>
+      <Menu>
+        <Menu.Trigger
+          as={Button}
+          ripple={false}
+          className="inline-flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+        >
+          {/* Cohort/Group Icon to represent Generation */}
+          <svg
+            className="me-2.5 h-3 w-3 scale-150 text-gray-500 dark:text-gray-400"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="19"
+            height="19"
+            fill="none"
+            viewBox="0 0 19 19"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4.333 6.333a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm11.334 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM14 13v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2Zm2.5-3a3 3 0 0 1 1.5 2.6v.9a1.5 1.5 0 0 1-.765 1.341m-2.235-8.841a3 3 0 0 1 2.5 1.5"
+            />
+          </svg>
+
+          <span className="uppercase">{variable.generation}</span>
+
+          <svg
+            className="ms-2.5 h-3 w-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 5"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </Menu.Trigger>
+        <Menu.Content
+          as="div"
+          className="z-10 max-h-1/2 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 divide-y divide-gray-100 overflow-y-auto rounded-lg border-none bg-white shadow-sm outline-none sm:max-h-3/4 dark:divide-gray-600 dark:bg-gray-800"
+        >
+          <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
+            {Object.keys(json).map((genKey) => (
+              <Menu.Item
+                as="li"
+                key={genKey}
+                className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                /* eslint-disable react/jsx-no-bind */
+                onMouseEnter={() => routeGeneration(genKey, "fetch")}
+                onClick={() => routeGeneration(genKey, "push")}
+              >
+                <input
+                  id={`gen-${genKey}`}
+                  type="radio"
+                  defaultValue=""
+                  name="generation-radio"
+                  checked={genKey === variable.generation}
+                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
+                  readOnly
+                />
+                <label
+                  htmlFor={`gen-${genKey}`}
+                  className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 uppercase dark:text-white"
+                >
+                  {genKey}
+                </label>
+              </Menu.Item>
+            ))}
+          </ul>
+        </Menu.Content>
+      </Menu>
       <Menu>
         <Menu.Trigger
           as={Button}
@@ -92,8 +265,8 @@ export default function LeftMenu({
               d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"
             />
           </svg>
-          {(variable.type == "utbk" && "SNBT - UTBK") ||
-            (variable.type == "tka" && "SNBP - TKA") ||
+          {(variable.type === "utbk" && "SNBT - UTBK") ||
+            (variable.type === "tka" && "SNBP - TKA") ||
             "TOEFL - TOAFL"}
           <svg
             className="ms-2.5 h-3 w-3"
@@ -113,7 +286,7 @@ export default function LeftMenu({
         </Menu.Trigger>
         <Menu.Content
           as="div"
-          className="z-10 max-h-3/4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 divide-y divide-gray-100 overflow-y-auto rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-800"
+          className="z-10 max-h-1/2 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 divide-y divide-gray-100 overflow-y-auto rounded-lg border-none bg-white shadow-sm outline-none sm:max-h-3/4 dark:divide-gray-600 dark:bg-gray-800"
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             <Menu.Item
@@ -130,7 +303,7 @@ export default function LeftMenu({
                 type="radio"
                 defaultValue=""
                 name="date-radio"
-                checked={variable.type == "utbk"}
+                checked={variable.type === "utbk"}
                 className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                 readOnly
               />
@@ -155,7 +328,7 @@ export default function LeftMenu({
                 type="radio"
                 defaultValue=""
                 name="date-radio"
-                checked={variable.type == "tka"}
+                checked={variable.type === "tka"}
                 className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                 readOnly
               />
@@ -180,7 +353,7 @@ export default function LeftMenu({
                 type="radio"
                 defaultValue=""
                 name="date-radio"
-                checked={variable.type == "toefl"}
+                checked={variable.type === "toefl"}
                 className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                 readOnly
               />
@@ -194,6 +367,7 @@ export default function LeftMenu({
           </ul>
         </Menu.Content>
       </Menu>
+
       <Menu>
         <Menu.Trigger
           as={Button}
@@ -236,7 +410,7 @@ export default function LeftMenu({
         </Menu.Trigger>
         <Menu.Content
           as="div"
-          className="z-10 max-h-3/4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 divide-y divide-gray-100 overflow-y-auto rounded-lg border-none bg-white shadow-sm outline-none dark:divide-gray-600 dark:bg-gray-800"
+          className="z-10 max-h-1/2 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 divide-y divide-gray-100 overflow-y-auto rounded-lg border-none bg-white shadow-sm outline-none sm:max-h-3/4 dark:divide-gray-600 dark:bg-gray-800"
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             {data.map((result, key) => (
@@ -253,7 +427,7 @@ export default function LeftMenu({
                   type="radio"
                   defaultValue=""
                   name="date-radio"
-                  checked={data[key].date == variable.date}
+                  checked={result.date === variable.date}
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                   readOnly
                 />
@@ -268,11 +442,12 @@ export default function LeftMenu({
           </ul>
         </Menu.Content>
       </Menu>
+
       <Menu>
         <Menu.Trigger
           as={Button}
           ripple={false}
-          className="ml-2 inline-flex max-h-3/4 cursor-pointer scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 items-center overflow-y-auto rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+          className="ml-2 inline-flex max-h-1/2 cursor-pointer scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 items-center overflow-y-auto rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 focus:outline-none sm:max-h-3/4 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
         >
           <svg
             className="me-2.5 h-3 w-3 scale-150 text-gray-500 dark:text-gray-400"
@@ -291,19 +466,19 @@ export default function LeftMenu({
               d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"
             />
           </svg>
-          {compatibility.utbk.includes("EXTERNAL")
-            ? (variable.lesson.toLowerCase() == "real" &&
+          {compatibility.utbk?.includes("EXTERNAL")
+            ? (variable.lesson.toLowerCase() === "real" &&
                 "ASLI / " +
                   variable.lesson.toUpperCase() +
                   " (AMANATUL UMMAH SAJA)") ||
-              (variable.lesson.toLowerCase() == "external" &&
+              (variable.lesson.toLowerCase() === "external" &&
                 "ASLI / REAL (" + variable.lesson.toUpperCase() + " SAJA)") ||
-              (variable.lesson.toLowerCase() == "mix" &&
+              (variable.lesson.toLowerCase() === "mix" &&
                 "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)") ||
               variable.lesson.toUpperCase() + " (AMANATUL UMMAH SAJA)"
-            : variable.lesson.toLowerCase() == "real"
+            : variable.lesson.toLowerCase() === "real"
               ? "ASLI / " + variable.lesson.toUpperCase()
-              : variable.lesson.toLowerCase() == "toafl"
+              : variable.lesson.toLowerCase() === "toafl"
                 ? variable.lesson.toUpperCase() + " / KHOS"
                 : variable.lesson.toUpperCase()}
           <svg
@@ -328,7 +503,7 @@ export default function LeftMenu({
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
             {data
-              .find((result) => result.date == variable.date)
+              .find((result) => result.date === variable.date)
               ?.types.map((lesson, key) => (
                 <Menu.Item
                   as="li"
@@ -342,7 +517,7 @@ export default function LeftMenu({
                     type="radio"
                     defaultValue=""
                     name="type-radio"
-                    checked={variable.lesson == lesson}
+                    checked={variable.lesson === lesson}
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                     readOnly
                   />
@@ -350,19 +525,19 @@ export default function LeftMenu({
                     htmlFor={`type-` + key}
                     className="ms-2 w-full cursor-pointer rounded-sm text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {compatibility.utbk.includes("EXTERNAL")
-                      ? (lesson.toLowerCase() == "real" &&
+                    {compatibility.utbk?.includes("EXTERNAL")
+                      ? (lesson.toLowerCase() === "real" &&
                           "ASLI / " +
                             lesson.toUpperCase() +
                             " (AMANATUL UMMAH SAJA)") ||
-                        (lesson.toLowerCase() == "external" &&
+                        (lesson.toLowerCase() === "external" &&
                           "ASLI / REAL (" + lesson.toUpperCase() + " SAJA)") ||
-                        (lesson.toLowerCase() == "mix" &&
+                        (lesson.toLowerCase() === "mix" &&
                           "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)") ||
                         lesson.toUpperCase() + " (AMANATUL UMMAH SAJA)"
-                      : lesson.toLowerCase() == "real"
+                      : lesson.toLowerCase() === "real"
                         ? "ASLI / " + lesson.toUpperCase()
-                        : lesson.toLowerCase() == "toafl"
+                        : lesson.toLowerCase() === "toafl"
                           ? lesson.toUpperCase() + " / KHOS"
                           : lesson.toUpperCase()}
                   </label>

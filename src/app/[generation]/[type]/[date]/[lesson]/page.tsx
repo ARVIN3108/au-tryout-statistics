@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import json from "../../../../../date.json";
+import json from "../../../../../../date.json";
 import * as path from "path";
 import { readSheet, CellValue, Row } from "read-excel-file/node";
 import SAINTEKOldTable from "@/components/tables/SAINTEKOldTable";
@@ -40,18 +40,21 @@ export default async function Page({ params, searchParams }: Props) {
   const variable = await params;
   const searchVar = await searchParams;
 
-  if (!(variable.type in json)) notFound();
+  if (!(variable.generation in json)) notFound();
+  const generationData = json[variable.generation as keyof typeof json];
 
-  const date = json[variable.type as keyof typeof json]?.find(
-    (d) => d.date === variable.date,
-  );
-  if (!date || !date.types.includes(variable.lesson)) notFound();
+  if (!(variable.type in generationData)) notFound();
+  const typeData = generationData[variable.type as keyof typeof generationData];
+
+  const dateEntry = typeData?.find((d) => d.date === variable.date);
+  if (!dateEntry || !dateEntry.types.includes(variable.lesson)) notFound();
 
   const filePath = path.join(
     process.cwd(),
     "src",
     "assets",
     "data",
+    variable.generation,
     variable.type,
     variable.date,
     variable.lesson + ".xlsx",
@@ -70,8 +73,8 @@ export default async function Page({ params, searchParams }: Props) {
   }
 
   const compatibility = {
-    utbk: json.utbk.find((s) => s.date == variable.date)?.compatibility || [],
-    tka: json.tka.find((s) => s.date == variable.date)?.compatibility || [],
+    utbk: typeData.find((s) => s.date == variable.date)?.compatibility || [],
+    tka: typeData.find((s) => s.date == variable.date)?.compatibility || [],
   };
 
   const institutions = toArrayOfString(searchVar.i);
@@ -147,53 +150,36 @@ export default async function Page({ params, searchParams }: Props) {
       </div>
       <div className="relative overflow-x-auto">
         {data.tryout.length != 0 ? (
-          variable.type == "utbk" ? (
-            compatibility.utbk.includes("EXTERNAL") ? (
-              (variable.lesson == "irt" && (
-                <UTBKIRTTable data={data.tryout} />
-              )) ||
-              ((variable.lesson == "real" || variable.lesson == "mix") && (
-                <UTBKRealWithMinusTable
-                  data={data.tryout}
-                  mix={variable.lesson == "mix"}
-                />
-              )) ||
-              (variable.lesson == "external" && (
-                <UTBKExternalRealWithMinusTable data={data.tryout} />
-              ))
-            ) : (
-              (variable.lesson == "irt" && (
-                <UTBKIRTTable data={data.tryout} />
-              )) ||
-              (variable.lesson == "real" && (
-                <UTBKRealTable data={data.tryout} />
-              ))
-            )
-          ) : variable.type == "tka" ? (
-            variable.date == json.tka[json.tka.length - 1].date ? (
+          variable.generation == "songolas" ? (
+            variable.type == "utbk" ? (
+              compatibility.utbk.includes("EXTERNAL") ? (
+                (variable.lesson == "irt" && (
+                  <UTBKIRTTable data={data.tryout} />
+                )) ||
+                ((variable.lesson == "real" || variable.lesson == "mix") && (
+                  <UTBKRealWithMinusTable
+                    data={data.tryout}
+                    mix={variable.lesson == "mix"}
+                  />
+                )) ||
+                (variable.lesson == "external" && (
+                  <UTBKExternalRealWithMinusTable data={data.tryout} />
+                ))
+              ) : (
+                (variable.lesson == "irt" && (
+                  <UTBKIRTTable data={data.tryout} />
+                )) ||
+                (variable.lesson == "real" && (
+                  <UTBKRealTable data={data.tryout} />
+                ))
+              )
+            ) : variable.type == "tka" ? (
               (variable.lesson == "saintek" && (
-                <SAINTEKOldTable data={data.tryout} />
+                <SAINTEKWithAverageTable data={data.tryout} />
               )) ||
               (variable.lesson == "soshum" && (
-                <SOSHUMWithAverageTable data={data.tryout} />
-              ))
-            ) : (
-              (variable.lesson == "saintek" &&
-                (compatibility.tka.includes("CIVICS") ? (
-                  <SAINTEKWithCivicsTable data={data.tryout} />
-                ) : compatibility.tka.includes("AVERAGE") ? (
-                  <SAINTEKWithAverageTable data={data.tryout} />
-                ) : (
-                  <SAINTEKTable data={data.tryout} />
-                ))) ||
-              (variable.lesson == "soshum" &&
-                (compatibility.tka.includes("CIVICS") ? (
-                  <SOSHUMWithCivicsTable data={data.tryout} />
-                ) : compatibility.tka.includes("AVERAGE") ? (
-                  <SOSHUMWithAverageTable data={data.tryout} />
-                ) : (
-                  <SOSHUMTable data={data.tryout} />
-                ))) ||
+                <SOSHUMWithCivicsTable data={data.tryout} />
+              )) ||
               (variable.lesson == "khos" &&
                 (compatibility.tka.includes("AVERAGE") ? (
                   <KHOSWithAverageTable data={data.tryout} />
@@ -201,10 +187,73 @@ export default async function Page({ params, searchParams }: Props) {
                   <KHOSTable data={data.tryout} />
                 ))) ||
               (variable.lesson == "tka" && <TKATable data={data.tryout} />)
+            ) : (
+              (variable.lesson == "toefl" && (
+                <TOEFLTable data={data.tryout} />
+              )) ||
+              (variable.lesson == "toafl" && <TOAFLTable data={data.tryout} />)
             )
           ) : (
-            (variable.lesson == "toefl" && <TOEFLTable data={data.tryout} />) ||
-            (variable.lesson == "toafl" && <TOAFLTable data={data.tryout} />)
+            variable.generation == "elvozthern" &&
+            (variable.type == "utbk"
+              ? compatibility.utbk.includes("EXTERNAL")
+                ? (variable.lesson == "irt" && (
+                    <UTBKIRTTable data={data.tryout} />
+                  )) ||
+                  ((variable.lesson == "real" || variable.lesson == "mix") && (
+                    <UTBKRealWithMinusTable
+                      data={data.tryout}
+                      mix={variable.lesson == "mix"}
+                    />
+                  )) ||
+                  (variable.lesson == "external" && (
+                    <UTBKExternalRealWithMinusTable data={data.tryout} />
+                  ))
+                : (variable.lesson == "irt" && (
+                    <UTBKIRTTable data={data.tryout} />
+                  )) ||
+                  (variable.lesson == "real" && (
+                    <UTBKRealTable data={data.tryout} />
+                  ))
+              : variable.type == "tka"
+                ? variable.date == typeData[typeData.length - 1].date
+                  ? (variable.lesson == "saintek" && (
+                      <SAINTEKOldTable data={data.tryout} />
+                    )) ||
+                    (variable.lesson == "soshum" && (
+                      <SOSHUMWithAverageTable data={data.tryout} />
+                    ))
+                  : (variable.lesson == "saintek" &&
+                      (compatibility.tka.includes("CIVICS") ? (
+                        <SAINTEKWithCivicsTable data={data.tryout} />
+                      ) : compatibility.tka.includes("AVERAGE") ? (
+                        <SAINTEKWithAverageTable data={data.tryout} />
+                      ) : (
+                        <SAINTEKTable data={data.tryout} />
+                      ))) ||
+                    (variable.lesson == "soshum" &&
+                      (compatibility.tka.includes("CIVICS") ? (
+                        <SOSHUMWithCivicsTable data={data.tryout} />
+                      ) : compatibility.tka.includes("AVERAGE") ? (
+                        <SOSHUMWithAverageTable data={data.tryout} />
+                      ) : (
+                        <SOSHUMTable data={data.tryout} />
+                      ))) ||
+                    (variable.lesson == "khos" &&
+                      (compatibility.tka.includes("AVERAGE") ? (
+                        <KHOSWithAverageTable data={data.tryout} />
+                      ) : (
+                        <KHOSTable data={data.tryout} />
+                      ))) ||
+                    (variable.lesson == "tka" && (
+                      <TKATable data={data.tryout} />
+                    ))
+                : (variable.lesson == "toefl" && (
+                    <TOEFLTable data={data.tryout} />
+                  )) ||
+                  (variable.lesson == "toafl" && (
+                    <TOAFLTable data={data.tryout} />
+                  )))
           )
         ) : (
           <div className="flex w-full flex-col items-center justify-center rounded-lg bg-gray-50 px-4 py-8 text-center text-sm font-bold text-gray-700 opacity-90 dark:bg-gray-800 dark:text-gray-300">

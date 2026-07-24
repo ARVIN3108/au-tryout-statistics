@@ -150,9 +150,9 @@ export function toArrayOfString(value: string | string[] | undefined | null) {
   return [String(value)];
 }
 
-export function isLessonAvailable(defaultLesson: string, lesson: string) {
-  if (defaultLesson != lesson) return defaultLesson;
-  return lesson;
+export function formatFirstCaseUpper(str: string | undefined): string {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 /**

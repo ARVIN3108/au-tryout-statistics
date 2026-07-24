@@ -1,188 +1,199 @@
 {
-  "utbk": [
-    {
-      "date": "19-4-26",
-      "types": ["irt", "real"],
-      "compatibility": []
-    },
-    {
-      "date": "17-4-26",
-      "types": ["irt", "real"],
-      "compatibility": []
-    },
-    {
-      "date": "11-4-26",
-      "types": ["irt", "real", "external", "mix"],
-      "compatibility": ["EXTERNAL"]
-    },
-    {
-      "date": "4-4-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "28-3-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "12-3-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "7-3-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "1-3-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "22-2-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "7-2-26",
-      "types": ["real"],
-      "compatibility": []
-    },
-    {
-      "date": "1-2-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "25-1-26",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "18-1-26",
-      "types": ["irt", "real"],
-      "compatibility": []
-    },
-    {
-      "date": "30-12-25",
-      "types": ["real"],
-      "compatibility": []
-    },
-    {
-      "date": "28-12-25",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "21-12-25",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "30-11-25",
-      "types": ["irt"],
-      "compatibility": []
-    },
-    {
-      "date": "23-11-25",
-      "types": ["irt", "real"],
-      "compatibility": []
-    },
-    {
-      "date": "16-11-25",
-      "types": ["irt", "real"],
-      "compatibility": []
-    }
-  ],
-  "tka": [
-    {
-      "date": "29-12-25",
-      "types": ["tka"],
-      "compatibility": []
-    },
-    {
-      "date": "19-10-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": ["CIVICS", "AVERAGE"]
-    },
-    {
-      "date": "12-10-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": ["CIVICS", "AVERAGE"]
-    },
-    {
-      "date": "5-10-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": ["AVERAGE"]
-    },
-    {
-      "date": "27-9-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": ["AVERAGE"]
-    },
-    {
-      "date": "13-9-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": ["AVERAGE"]
-    },
-    {
-      "date": "6-9-25",
-      "types": ["saintek", "soshum", "khos"],
-      "compatibility": ["AVERAGE"]
-    },
-    {
-      "date": "23-8-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": ["AVERAGE"]
-    },
-    {
-      "date": "10-8-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": ["AVERAGE"]
-    },
-    {
-      "date": "3-8-25",
-      "types": ["saintek", "soshum", "khos"],
-      "compatibility": []
-    },
-    {
-      "date": "27-7-25",
-      "types": ["saintek", "soshum"],
-      "compatibility": []
-    }
-  ],
-  "toefl": [
-    {
-      "date": "6-5-26",
-      "types": ["toefl"],
-      "compatibility": []
-    },
-    {
-      "date": "2-5-26",
-      "types": ["toefl"],
-      "compatibility": []
-    },
-    {
-      "date": "3-4-26",
-      "types": ["toefl"],
-      "compatibility": []
-    },
-    {
-      "date": "21-2-26",
-      "types": ["toefl"],
-      "compatibility": []
-    },
-    {
-      "date": "14-2-26",
-      "types": ["toefl"],
-      "compatibility": []
-    },
-    {
-      "date": "14-12-25",
-      "types": ["toefl", "toafl"],
-      "compatibility": []
-    }
-  ]
+  "songolas": {
+    "tka": [
+      {
+        "date": "20-7-26",
+        "types": ["saintek", "soshum"],
+        "compatibility": []
+      }
+    ]
+  },
+  "elvozthern": {
+    "utbk": [
+      {
+        "date": "19-4-26",
+        "types": ["irt", "real"],
+        "compatibility": []
+      },
+      {
+        "date": "17-4-26",
+        "types": ["irt", "real"],
+        "compatibility": []
+      },
+      {
+        "date": "11-4-26",
+        "types": ["irt", "real", "external", "mix"],
+        "compatibility": ["EXTERNAL"]
+      },
+      {
+        "date": "4-4-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "28-3-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "12-3-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "7-3-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "1-3-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "22-2-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "7-2-26",
+        "types": ["real"],
+        "compatibility": []
+      },
+      {
+        "date": "1-2-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "25-1-26",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "18-1-26",
+        "types": ["irt", "real"],
+        "compatibility": []
+      },
+      {
+        "date": "30-12-25",
+        "types": ["real"],
+        "compatibility": []
+      },
+      {
+        "date": "28-12-25",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "21-12-25",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "30-11-25",
+        "types": ["irt"],
+        "compatibility": []
+      },
+      {
+        "date": "23-11-25",
+        "types": ["irt", "real"],
+        "compatibility": []
+      },
+      {
+        "date": "16-11-25",
+        "types": ["irt", "real"],
+        "compatibility": []
+      }
+    ],
+    "tka": [
+      {
+        "date": "29-12-25",
+        "types": ["tka"],
+        "compatibility": []
+      },
+      {
+        "date": "19-10-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["CIVICS", "AVERAGE"]
+      },
+      {
+        "date": "12-10-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["CIVICS", "AVERAGE"]
+      },
+      {
+        "date": "5-10-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["AVERAGE"]
+      },
+      {
+        "date": "27-9-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["AVERAGE"]
+      },
+      {
+        "date": "13-9-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["AVERAGE"]
+      },
+      {
+        "date": "6-9-25",
+        "types": ["saintek", "soshum", "khos"],
+        "compatibility": ["AVERAGE"]
+      },
+      {
+        "date": "23-8-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["AVERAGE"]
+      },
+      {
+        "date": "10-8-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["AVERAGE"]
+      },
+      {
+        "date": "3-8-25",
+        "types": ["saintek", "soshum", "khos"],
+        "compatibility": []
+      },
+      {
+        "date": "27-7-25",
+        "types": ["saintek", "soshum"],
+        "compatibility": []
+      }
+    ],
+    "toefl": [
+      {
+        "date": "6-5-26",
+        "types": ["toefl"],
+        "compatibility": []
+      },
+      {
+        "date": "2-5-26",
+        "types": ["toefl"],
+        "compatibility": []
+      },
+      {
+        "date": "3-4-26",
+        "types": ["toefl"],
+        "compatibility": []
+      },
+      {
+        "date": "21-2-26",
+        "types": ["toefl"],
+        "compatibility": []
+      },
+      {
+        "date": "14-2-26",
+        "types": ["toefl"],
+        "compatibility": []
+      },
+      {
+        "date": "14-12-25",
+        "types": ["toefl", "toafl"],
+        "compatibility": []
+      }
+    ]
+  }
 }
