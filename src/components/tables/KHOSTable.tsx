@@ -37,7 +37,7 @@ export default function KHOSTable({ data }: { data: Row[] }) {
             BNR
           </th>
           <th scope="col" className="p-3.5">
-            <span className="absolute -mt-0.5 -ml-6">QIROAH</span>
+            <span className="absolute -mt-0.5 -ml-6.5">QIRO&apos;AH</span>
             <br />
             SLH
           </th>

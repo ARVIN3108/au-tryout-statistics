@@ -11,6 +11,7 @@ import SOSHUMWithAverageTable from "@/components/tables/SOSHUMWithAverageTable";
 import SOSHUMWithCivicsTable from "@/components/tables/SOSHUMWithCivicsTable";
 import KHOSTable from "@/components/tables/KHOSTable";
 import KHOSWithAverageTable from "@/components/tables/KHOSWithAverageTable";
+import KHOS2026Table from "@/components/tables/KHOS2026Table";
 import TKATable from "@/components/tables/TKATable";
 import UTBKIRTTable from "@/components/tables/UTBKIRTTable";
 import UTBKRealTable from "@/components/tables/UTBKRealTable";
@@ -180,12 +181,9 @@ export default async function Page({ params, searchParams }: Props) {
               (variable.lesson == "soshum" && (
                 <SOSHUMWithCivicsTable data={data.tryout} />
               )) ||
-              (variable.lesson == "khos" &&
-                (compatibility.tka.includes("AVERAGE") ? (
-                  <KHOSWithAverageTable data={data.tryout} />
-                ) : (
-                  <KHOSTable data={data.tryout} />
-                ))) ||
+              (variable.lesson == "khos" && (
+                <KHOS2026Table data={data.tryout} />
+              )) ||
               (variable.lesson == "tka" && <TKATable data={data.tryout} />)
             ) : (
               (variable.lesson == "toefl" && (
