@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import json from "../../../../../../date.json";
+import json from "../../../../../../data.json";
 import * as path from "path";
 import { readSheet, CellValue, Row } from "read-excel-file/node";
 import SAINTEKOldTable from "@/components/tables/SAINTEKOldTable";

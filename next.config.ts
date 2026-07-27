@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import date from "./date.json";
+import data from "./data.json";
 
 interface NewestDateResult {
   generation: string | null;
@@ -12,7 +12,7 @@ interface NewestDateResult {
 }
 
 function getNewestDate(): NewestDateResult {
-  const generations = Object.keys(date) as Array<keyof typeof date>;
+  const generations = Object.keys(data) as Array<keyof typeof data>;
   let newestTime = -Infinity;
 
   // Initialize the accumulator for our 4-segment route data
@@ -31,7 +31,7 @@ function getNewestDate(): NewestDateResult {
 
   // Outer Loop: Traverse Generations ("elvozthern", "songolas", etc.)
   for (const gen of generations) {
-    const genData = date[gen];
+    const genData = data[gen];
     const types = Object.keys(genData) as Array<keyof typeof genData>;
 
     // Inner Loop: Traverse Exam Types ("utbk", "tka", "toefl", etc.)

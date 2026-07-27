@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, Button } from "@material-tailwind/react";
-import json from "../../../date.json";
+import json from "../../../data.json";
 import { useRouter } from "next/navigation";
 import { buildURL, convertDateString } from "@/utils";
 import { useCallback } from "react";
@@ -17,9 +17,49 @@ export default function LeftMenu({
 }) {
   const router = useRouter();
 
-  // 1. Safely navigate the 2-layer JSON hierarchy with fallbacks
+  // Safely navigate the 2-layer JSON hierarchy with fallbacks
   const genData = json[variable.generation as keyof typeof json];
   const data = genData[variable.type as keyof typeof genData];
+
+  const getTypeName = (name: string | null = null) => {
+    const typeName = (name || variable.type).toUpperCase();
+
+    switch (typeName) {
+      case "UTBK":
+        return "SNBT - " + typeName;
+      case "TKA":
+        return "SNBP - " + typeName;
+      case "TOEFL":
+        return typeName + " - TOAFL";
+      default:
+        return typeName;
+    }
+  };
+
+  const getLessonName = (name: string | null = null) => {
+    const lessonName = (name || variable.lesson).toUpperCase();
+
+    switch (lessonName) {
+      case "REAL":
+        name = "ASLI / " + lessonName;
+        if (compatibility.utbk?.includes("EXTERNAL"))
+          return name + " (AMANATUL UMMAH SAJA)";
+        return name;
+      case "TOAFL":
+        return lessonName + " / KHOS";
+      case "IRT":
+        if (compatibility.utbk?.includes("EXTERNAL"))
+          return lessonName + " (AMANATUL UMMAH SAJA)";
+      case "EXTERNAL":
+        if (compatibility.utbk?.includes("EXTERNAL"))
+          return `ASLI / REAL (${lessonName} SAJA)`;
+      case "MIX":
+        if (compatibility.utbk?.includes("EXTERNAL"))
+          return "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)";
+      default:
+        return lessonName;
+    }
+  };
 
   const routeGeneration = useCallback(
     (newGeneration: string, method = "push") => {
@@ -265,9 +305,7 @@ export default function LeftMenu({
               d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"
             />
           </svg>
-          {(variable.type === "utbk" && "SNBT - UTBK") ||
-            (variable.type === "tka" && "SNBP - TKA") ||
-            "TOEFL - TOAFL"}
+          {getTypeName()}
           <svg
             className="ms-2.5 h-3 w-3"
             aria-hidden="true"
@@ -289,81 +327,31 @@ export default function LeftMenu({
           className="z-10 max-h-1/2 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-gray-800 divide-y divide-gray-100 overflow-y-auto rounded-lg border-none bg-white shadow-sm outline-none sm:max-h-3/4 dark:divide-gray-600 dark:bg-gray-800"
         >
           <ul className="space-y-1 p-3 text-sm text-gray-700 dark:text-gray-200">
-            <Menu.Item
-              as="li"
-              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-              onMouseEnter={useCallback(
-                () => routeType("utbk", "fetch"),
-                [routeType],
-              )}
-              onClick={useCallback(() => routeType("utbk"), [routeType])}
-            >
-              <input
-                id="type-utbk"
-                type="radio"
-                defaultValue=""
-                name="date-radio"
-                checked={variable.type === "utbk"}
-                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                readOnly
-              />
-              <label
-                htmlFor="type-utbk"
-                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
+            {Object.keys(genData).map((typeKey) => (
+              <Menu.Item
+                as="li"
+                key={typeKey}
+                className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                onMouseEnter={() => routeType(typeKey, "fetch")}
+                onClick={() => routeType(typeKey)}
               >
-                SNBT - UTBK
-              </label>
-            </Menu.Item>
-            <Menu.Item
-              as="li"
-              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-              onMouseEnter={useCallback(
-                () => routeType("tka", "fetch"),
-                [routeType],
-              )}
-              onClick={useCallback(() => routeType("tka"), [routeType])}
-            >
-              <input
-                id="type-tka"
-                type="radio"
-                defaultValue=""
-                name="date-radio"
-                checked={variable.type === "tka"}
-                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                readOnly
-              />
-              <label
-                htmlFor="type-tka"
-                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
-              >
-                SNBP - TKA
-              </label>
-            </Menu.Item>
-            <Menu.Item
-              as="li"
-              className="flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-              onMouseEnter={useCallback(
-                () => routeType("toefl", "fetch"),
-                [routeType],
-              )}
-              onClick={useCallback(() => routeType("toefl"), [routeType])}
-            >
-              <input
-                id="type-toefl"
-                type="radio"
-                defaultValue=""
-                name="date-radio"
-                checked={variable.type === "toefl"}
-                className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                readOnly
-              />
-              <label
-                htmlFor="type-toefl"
-                className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
-              >
-                TOEFL - TOAFL
-              </label>
-            </Menu.Item>
+                <input
+                  id="type-utbk"
+                  type="radio"
+                  defaultValue=""
+                  name="date-radio"
+                  checked={variable.type === typeKey}
+                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
+                  readOnly
+                />
+                <label
+                  htmlFor="type-utbk"
+                  className="ms-2 w-full cursor-pointer rounded-sm text-left text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  {getTypeName(typeKey)}
+                </label>
+              </Menu.Item>
+            ))}
           </ul>
         </Menu.Content>
       </Menu>
@@ -466,21 +454,7 @@ export default function LeftMenu({
               d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"
             />
           </svg>
-          {compatibility.utbk?.includes("EXTERNAL")
-            ? (variable.lesson.toLowerCase() === "real" &&
-                "ASLI / " +
-                  variable.lesson.toUpperCase() +
-                  " (AMANATUL UMMAH SAJA)") ||
-              (variable.lesson.toLowerCase() === "external" &&
-                "ASLI / REAL (" + variable.lesson.toUpperCase() + " SAJA)") ||
-              (variable.lesson.toLowerCase() === "mix" &&
-                "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)") ||
-              variable.lesson.toUpperCase() + " (AMANATUL UMMAH SAJA)"
-            : variable.lesson.toLowerCase() === "real"
-              ? "ASLI / " + variable.lesson.toUpperCase()
-              : variable.lesson.toLowerCase() === "toafl"
-                ? variable.lesson.toUpperCase() + " / KHOS"
-                : variable.lesson.toUpperCase()}
+          {getLessonName()}
           <svg
             className="ms-2.5 h-3 w-3"
             aria-hidden="true"
@@ -525,21 +499,7 @@ export default function LeftMenu({
                     htmlFor={`type-` + key}
                     className="ms-2 w-full cursor-pointer rounded-sm text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {compatibility.utbk?.includes("EXTERNAL")
-                      ? (lesson.toLowerCase() === "real" &&
-                          "ASLI / " +
-                            lesson.toUpperCase() +
-                            " (AMANATUL UMMAH SAJA)") ||
-                        (lesson.toLowerCase() === "external" &&
-                          "ASLI / REAL (" + lesson.toUpperCase() + " SAJA)") ||
-                        (lesson.toLowerCase() === "mix" &&
-                          "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)") ||
-                        lesson.toUpperCase() + " (AMANATUL UMMAH SAJA)"
-                      : lesson.toLowerCase() === "real"
-                        ? "ASLI / " + lesson.toUpperCase()
-                        : lesson.toLowerCase() === "toafl"
-                          ? lesson.toUpperCase() + " / KHOS"
-                          : lesson.toUpperCase()}
+                    {getLessonName(lesson)}
                   </label>
                 </Menu.Item>
               ))}
