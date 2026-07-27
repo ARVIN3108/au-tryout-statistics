@@ -110,6 +110,30 @@ export default async function RootLayout({
                         </svg>
                       </Link>
                     </li>
+                    <li>
+                      <Link
+                        href="https://forms.gle/uYQRegpuLrx53WFq7"
+                        rel="noreferrer"
+                        target="_blank"
+                        className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
+                      >
+                        <span className="sr-only">Google Form</span>
+                        <svg
+                          className="size-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"
+                          />
+                        </svg>
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </div>
