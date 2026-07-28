@@ -13,7 +13,7 @@ export default function LeftMenu({
 }: {
   variable: { [key: string]: string };
   searchVar: { [key: string]: string | string[] | undefined };
-  compatibility: { [key: string]: string[] };
+  compatibility: string[];
 }) {
   const router = useRouter();
 
@@ -42,19 +42,19 @@ export default function LeftMenu({
     switch (lessonName) {
       case "REAL":
         name = "ASLI / " + lessonName;
-        if (compatibility.utbk?.includes("EXTERNAL"))
+        if (compatibility.includes("EXTERNAL"))
           return name + " (AMANATUL UMMAH SAJA)";
         return name;
       case "TOAFL":
         return lessonName + " / KHOS";
       case "IRT":
-        if (compatibility.utbk?.includes("EXTERNAL"))
+        if (compatibility.includes("EXTERNAL"))
           return lessonName + " (AMANATUL UMMAH SAJA)";
       case "EXTERNAL":
-        if (compatibility.utbk?.includes("EXTERNAL"))
+        if (compatibility.includes("EXTERNAL"))
           return `ASLI / REAL (${lessonName} SAJA)`;
       case "MIX":
-        if (compatibility.utbk?.includes("EXTERNAL"))
+        if (compatibility.includes("EXTERNAL"))
           return "ASLI / REAL (AMANATUL UMMAH + EXTERNAL)";
       default:
         return lessonName;

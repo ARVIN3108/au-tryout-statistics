@@ -2,9 +2,14 @@
   "songolas": {
     "tka": [
       {
+        "date": "26-7-26",
+        "types": ["saintek", "soshum"],
+        "compatibility": []
+      },
+      {
         "date": "20-7-26",
         "types": ["saintek", "soshum", "khos"],
-        "compatibility": []
+        "compatibility": ["CIVICS"]
       }
     ]
   },
