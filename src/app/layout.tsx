@@ -148,7 +148,7 @@ export default async function RootLayout({
 
                   <p className="mt-4 text-sm text-gray-500 sm:mt-0 dark:text-gray-400">
                     Project ini dibuat murni dari inisiatif sang kreator sendiri
-                    dan tidak didukung oleh pihak pesantren.
+                    dan tidak terafiliasi dengan pihak pesantren.
                   </p>
                 </div>
               </div>
