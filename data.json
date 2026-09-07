@@ -2,6 +2,11 @@
   "songolas": {
     "tka": [
       {
+        "date": "29-8-26",
+        "types": ["saintek", "soshum"],
+        "compatibility": ["NEW_FORMAT"]
+      },
+      {
         "date": "14-8-26",
         "types": ["saintek", "soshum"],
         "compatibility": []

@@ -13,6 +13,7 @@ import KHOSTable from "@/components/tables/KHOSTable";
 import KHOSWithAverageTable from "@/components/tables/KHOSWithAverageTable";
 import KHOS2026Table from "@/components/tables/KHOS2026Table";
 import TKATable from "@/components/tables/TKATable";
+import TKALessonTable from "@/components/tables/TKALessonTable";
 import UTBKIRTTable from "@/components/tables/UTBKIRTTable";
 import UTBKRealTable from "@/components/tables/UTBKRealTable";
 import UTBKRealWithMinusTable from "@/components/tables/UTBKRealWithMinusTable";
@@ -180,6 +181,9 @@ export default async function Page({ params, searchParams }: Props) {
                 ))
               )
             ) : variable.type === "tka" ? (
+              (compatibility.includes("NEW_FORMAT") && (
+                <TKALessonTable data={data.tryout} />
+              )) ||
               (variable.lesson === "saintek" && (
                 <SAINTEKWithAverageTable data={data.tryout} />
               )) ||
